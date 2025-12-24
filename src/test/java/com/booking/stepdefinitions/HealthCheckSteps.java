@@ -1,5 +1,6 @@
 package com.booking.stepdefinitions;
 
+import com.booking.config.ConfigReader;
 import io.cucumber.java.en.*;
 import io.restassured.response.Response;
 
@@ -14,7 +15,8 @@ public class HealthCheckSteps {
         response = given()
                 .contentType("application/json")
                 .when()
-                .get("https://automationintesting.online/api/booking/actuator/health");
+                .get(ConfigReader.getBaseUrl()
+                        + "/api/booking/actuator/health");
     }
 
     @Then("the booking service should be up and running")
