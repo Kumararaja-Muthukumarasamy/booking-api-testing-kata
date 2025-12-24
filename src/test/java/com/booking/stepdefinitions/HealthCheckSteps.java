@@ -1,5 +1,6 @@
 package com.booking.stepdefinitions;
 
+import com.booking.client.HealthCheckClient;
 import com.booking.config.ConfigReader;
 import com.booking.constants.APIPaths;
 import com.booking.constants.HTTPStatusCodes;
@@ -15,11 +16,7 @@ public class HealthCheckSteps {
 
     @When("I check the booking service health")
     public void i_check_the_booking_service_health() {
-        response = given()
-                .spec(RequestSpecFactory.getBaseRequestSpec())
-                .when()
-                .get(ConfigReader.getBaseUrl()
-                        + APIPaths.HEALTH_CHECK);
+        response = HealthCheckClient.getHealthStatus();
     }
 
     @Then("the booking service should be up and running")
