@@ -1,6 +1,8 @@
 package com.booking.stepdefinitions;
 
 import com.booking.config.ConfigReader;
+import com.booking.constants.APIPaths;
+import com.booking.constants.HTTPStatusCodes;
 import com.booking.spec.RequestSpecFactory;
 import io.cucumber.java.en.*;
 import io.restassured.response.Response;
@@ -17,13 +19,13 @@ public class HealthCheckSteps {
                 .spec(RequestSpecFactory.getBaseRequestSpec())
                 .when()
                 .get(ConfigReader.getBaseUrl()
-                        + "/api/booking/actuator/health");
+                        + APIPaths.HEALTH_CHECK);
     }
 
     @Then("the booking service should be up and running")
     public void the_booking_service_should_be_up_and_running() {
         response.then()
-                .statusCode(200)
+                .statusCode(HTTPStatusCodes.OK)
                 .body("status", equalTo("UP"));
     }
 }
