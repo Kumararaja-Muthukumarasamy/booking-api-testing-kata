@@ -1,6 +1,7 @@
 package com.booking.stepdefinitions;
 
 import com.booking.config.ConfigReader;
+import com.booking.spec.RequestSpecFactory;
 import io.cucumber.java.en.*;
 import io.restassured.response.Response;
 
@@ -13,7 +14,7 @@ public class HealthCheckSteps {
     @When("I check the booking service health")
     public void i_check_the_booking_service_health() {
         response = given()
-                .contentType("application/json")
+                .spec(RequestSpecFactory.getBaseRequestSpec())
                 .when()
                 .get(ConfigReader.getBaseUrl()
                         + "/api/booking/actuator/health");
