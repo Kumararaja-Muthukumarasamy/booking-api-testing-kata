@@ -11,6 +11,7 @@ public class CreateBookingClient {
     public static Response createBooking(Object bookingRequest) {
         return given()
                 .spec(RequestSpecFactory.getBaseRequestSpec())
+                .log().all()
                 .body(bookingRequest)
                 .when()
                 .post(APIPaths.CREATE_BOOKING);
