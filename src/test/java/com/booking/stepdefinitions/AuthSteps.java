@@ -1,5 +1,6 @@
 package com.booking.stepdefinitions;
 
+import com.booking.auth.TokenManager;
 import com.booking.client.AuthClient;
 import com.booking.config.ConfigReader;
 import com.booking.constants.HTTPStatusCodes;
@@ -26,5 +27,8 @@ public class AuthSteps {
         response.then()
                 .statusCode(HTTPStatusCodes.OK)
                 .body("token", notNullValue());
+
+        String token = response.jsonPath().getString("token");
+        TokenManager.setToken(token);
     }
 }
