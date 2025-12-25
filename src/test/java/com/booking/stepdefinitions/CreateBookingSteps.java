@@ -2,8 +2,8 @@ package com.booking.stepdefinitions;
 
 import com.booking.client.CreateBookingClient;
 import com.booking.constants.HTTPStatusCodes;
-import com.booking.model.BookingDates;
 import com.booking.model.BookingRequest;
+import com.booking.testdata.BookingDataFactory;
 import io.cucumber.java.en.*;
 import io.restassured.response.Response;
 
@@ -16,17 +16,7 @@ public class CreateBookingSteps {
 
     @When("I create booking with valid details")
     public void i_create_booking_with_valid_details() {
-        BookingDates dates = new BookingDates("2024-02-01", "2024-02-05");
-        BookingRequest requestBody = new BookingRequest(
-                555,
-                "Johney",
-                "Doego",
-                true,
-                dates,
-                "johney.doego@example.com",
-                "12345678902"
-        );
-
+        BookingRequest requestBody = BookingDataFactory.validBooking();
         response = CreateBookingClient.createBooking(requestBody);
     }
 
@@ -35,11 +25,11 @@ public class CreateBookingSteps {
         response.then()
                 .statusCode(HTTPStatusCodes.CREATED)
                 .body("bookingid", greaterThan(0))
-                .body("roomid", equalTo(555))
-                .body("firstname", equalTo("Johney"))
-                .body("lastname", equalTo("Doego"))
+                .body("roomid", equalTo(666))
+                .body("firstname", equalTo("XJohn"))
+                .body("lastname", equalTo("XDoe"))
                 .body("depositpaid", equalTo(true))
-                .body("bookingdates.checkin", equalTo("2024-02-01"))
-                .body("bookingdates.checkout", equalTo("2024-02-05"));
+                .body("bookingdates.checkin", equalTo("2024-03-05"))
+                .body("bookingdates.checkout", equalTo("2024-05-07"));
     }
 }
