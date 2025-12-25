@@ -1,8 +1,8 @@
 package com.booking;
 
 import org.junit.platform.suite.api.*;
-import static io.cucumber.core.options.Constants.GLUE_PROPERTY_NAME;
-import static io.cucumber.core.options.Constants.PLUGIN_PROPERTY_NAME;
+
+import static io.cucumber.core.options.Constants.*;
 
 @Suite
 @IncludeEngines("cucumber")
