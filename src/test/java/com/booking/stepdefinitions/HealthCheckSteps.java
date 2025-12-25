@@ -1,14 +1,10 @@
 package com.booking.stepdefinitions;
 
 import com.booking.client.HealthCheckClient;
-import com.booking.config.ConfigReader;
-import com.booking.constants.APIPaths;
 import com.booking.constants.HTTPStatusCodes;
-import com.booking.spec.RequestSpecFactory;
 import io.cucumber.java.en.*;
 import io.restassured.response.Response;
 
-import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
 public class HealthCheckSteps {
