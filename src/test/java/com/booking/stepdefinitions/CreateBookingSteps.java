@@ -8,22 +8,33 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.response.Response;
 
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
 
 public class CreateBookingSteps {
 
     private Response response;
+    private BookingRequest bookingRequest;
 
     @When("I create booking with valid details")
     public void i_create_booking_with_valid_details() {
-        BookingRequest requestBody = BookingDataFactory.validBooking();
-        response = CreateBookingClient.createBooking(requestBody);
+        bookingRequest = BookingDataFactory.validBooking();
+        response = CreateBookingClient.createBooking(bookingRequest);
     }
 
     @Then("the booking should be created successfully")
     public void the_booking_should_be_created_successfully() {
         response.then()
                 .statusCode(HTTPStatusCodes.CREATED)
-                .body("bookingid", greaterThan(0));
+                .body("bookingid", greaterThan(0))
+                .body("roomid", equalTo(bookingRequest.getRoomid()))
+                .body("firstname", equalTo(bookingRequest.getFirstname()))
+                .body("lastname", equalTo(bookingRequest.getLastname()))
+                .body("depositpaid", equalTo(bookingRequest.isDepositpaid()))
+                .body("bookingdates.checkin",
+                        equalTo(bookingRequest.getBookingdates().getCheckin()))
+                .body("bookingdates.checkout",
+                        equalTo(bookingRequest.getBookingdates().getCheckout()));
+
     }
 }
