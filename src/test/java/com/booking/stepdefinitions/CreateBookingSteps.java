@@ -64,12 +64,6 @@ public class CreateBookingSteps {
                 "Unexpected status code");
     }
 
-    @Then("the error messages should be {string}")
-    public void the_error_messages_should_be(String expectedMessage) {
-        String actualError = response.jsonPath().getString("errors[0]");
-        Assertions.assertEquals(expectedMessage, actualError, "Validation error mismatch");
-    }
-
     @Given("a booking already exists for a room")
     public void a_booking_already_exists_for_a_room() {
         bookingRequest = BookingDataFactory.validBooking();
@@ -87,5 +81,22 @@ public class CreateBookingSteps {
         String actualError = response.jsonPath().getString("error");
         Assertions.assertEquals(expectedMessage, actualError,
                 "Error message mismatch");
+    }
+
+    @When("I create a booking with invalid {string}")
+    public void i_create_a_booking_with_invalid_field(String field) {
+        bookingRequest = BookingDataFactory.bookingWithInvalidField(field);
+        response = CreateBookingClient.createBooking(bookingRequest);
+    }
+
+    @Then("the error messages should be {string}")
+    public void the_error_messages_should_be(String expectedMessage) {
+        // Directly check both possible keys without branching
+        String actualError = response.jsonPath().getString("errors[0]");
+        if (actualError == null) {
+            actualError = response.jsonPath().getString("error");
+        }
+
+        Assertions.assertEquals(expectedMessage, actualError, "Validation error mismatch");
     }
 }

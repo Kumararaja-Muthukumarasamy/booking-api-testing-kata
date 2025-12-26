@@ -20,13 +20,9 @@ public class BookingDataFactory {
         BookingDates dates = DateUtil.validBookingDates();
 
         return new BookingRequest(
-                generateRoomid(),
-                generateFirstName(),
-                generateLastName(),
-                generateDepositPaid(),
-                dates,
-                generateEmail(),
-                generatePhoneNumber()
+                generateRoomid(), generateFirstName(),
+                generateLastName(), generateDepositPaid(),
+                dates, generateEmail(), generatePhoneNumber()
         );
     }
 
@@ -71,87 +67,166 @@ public class BookingDataFactory {
 
     public static BookingRequest bookingWithoutRoomId() {
         return new BookingRequest(
-                0,
-                generateFirstName(),
-                generateLastName(),
-                generateDepositPaid(),
-                DateUtil.validBookingDates(),
-                generateEmail(),
-                generatePhoneNumber()
+                0, generateFirstName(),
+                generateLastName(), generateDepositPaid(),
+                DateUtil.validBookingDates(), generateEmail(), generatePhoneNumber()
         );
     }
 
     public static BookingRequest bookingWithoutFirstname() {
         return new BookingRequest(
-                generateRoomid(),
-                null,
-                generateLastName(),
-                generateDepositPaid(),
-                DateUtil.validBookingDates(),
-                generateEmail(),
-                generatePhoneNumber()
+                generateRoomid(), null, generateLastName(),
+                generateDepositPaid(), DateUtil.validBookingDates(),
+                generateEmail(), generatePhoneNumber()
         );
     }
 
     public static BookingRequest bookingWithoutLastname() {
         return new BookingRequest(
-                generateRoomid(),
-                generateFirstName(),
-                null,
-                generateDepositPaid(),
-                DateUtil.validBookingDates(),
-                generateEmail(),
-                generatePhoneNumber()
+                generateRoomid(), generateFirstName(),
+                null, generateDepositPaid(),
+                DateUtil.validBookingDates(), generateEmail(), generatePhoneNumber()
         );
     }
 
     public static BookingRequest bookingWithoutCheckin() {
         BookingDates dates = new BookingDates(null, DateUtil.todayPlusDays(2));
         return new BookingRequest(
-                generateRoomid(),
-                generateFirstName(),
-                generateLastName(),
-                generateDepositPaid(),
-                dates,
-                generateEmail(),
-                generatePhoneNumber()
+                generateRoomid(), generateFirstName(),
+                generateLastName(), generateDepositPaid(),
+                dates, generateEmail(), generatePhoneNumber()
         );
     }
 
     public static BookingRequest bookingWithoutCheckout() {
         BookingDates dates = new BookingDates(DateUtil.today(), null);
         return new BookingRequest(
-                generateRoomid(),
-                generateFirstName(),
-                generateLastName(),
-                generateDepositPaid(),
-                dates,
-                generateEmail(),
-                generatePhoneNumber()
+                generateRoomid(), generateFirstName(),
+                generateLastName(), generateDepositPaid(),
+                dates, generateEmail(), generatePhoneNumber()
         );
     }
 
     public static BookingRequest bookingWithoutEmail() {
         return new BookingRequest(
-                generateRoomid(),
-                generateFirstName(),
-                generateLastName(),
-                generateDepositPaid(),
-                DateUtil.validBookingDates(),
-                null,
-                generatePhoneNumber()
+                generateRoomid(), generateFirstName(), generateLastName(),
+                generateDepositPaid(), DateUtil.validBookingDates(),
+                null, generatePhoneNumber()
         );
     }
 
     public static BookingRequest bookingWithoutPhone() {
         return new BookingRequest(
-                generateRoomid(),
-                generateFirstName(),
-                generateLastName(),
-                generateDepositPaid(),
-                DateUtil.validBookingDates(),
-                generatePhoneNumber(),
-                null
+                generateRoomid(), generateFirstName(), generateLastName(),
+                generateDepositPaid(), DateUtil.validBookingDates(),
+                generateEmail(), null
         );
+    }
+
+    // --- Roomid ---
+    public static BookingRequest roomidNegative() {
+        return new BookingRequest(
+                -1, generateFirstName(), generateLastName(),
+                generateDepositPaid(), DateUtil.validBookingDates(),
+                generateEmail(), generatePhoneNumber());
+    }
+
+    // --- Firstname ---
+    public static BookingRequest firstnameTooShort() {
+        return new BookingRequest(
+                generateRoomid(), "Jo", generateLastName(),
+                generateDepositPaid(), DateUtil.validBookingDates(),
+                generateEmail(), generatePhoneNumber());
+    }
+
+    public static BookingRequest firstnameTooLong() {
+        return new BookingRequest(
+                generateRoomid(), "Supercalifragilisticexpialidocious", generateLastName(),
+                generateDepositPaid(), DateUtil.validBookingDates(),
+                generateEmail(), generatePhoneNumber());
+    }
+
+    // --- Lastname ---
+    public static BookingRequest lastnameTooShort() {
+        return new BookingRequest(
+                generateRoomid(), generateFirstName(), "Go",
+                generateDepositPaid(), DateUtil.validBookingDates(),
+                generateEmail(), generatePhoneNumber());
+    }
+
+    public static BookingRequest lastnameTooLong() {
+        return new BookingRequest(
+                generateRoomid(), generateFirstName(), "Supercalifragilisticexpialidocious",
+                generateDepositPaid(), DateUtil.validBookingDates(),
+                generateEmail(), generatePhoneNumber());
+    }
+
+    // --- Dates ---
+    public static BookingRequest invalidDateFormat() {
+        BookingDates dates = new BookingDates("15-01-2026", "16-01-2026");
+
+        return new BookingRequest(
+                generateRoomid(), generateFirstName(), generateLastName(),
+                generateDepositPaid(), dates,
+                generateEmail(), generatePhoneNumber());
+    }
+
+    public static BookingRequest sameDate() {
+
+        BookingDates dates = new BookingDates(DateUtil.today(), DateUtil.today());
+        return new BookingRequest(
+                generateRoomid(), generateFirstName(), generateLastName(),
+                generateDepositPaid(), dates,
+                generateEmail(), generatePhoneNumber());
+    }
+
+    public static BookingRequest checkoutBeforeCheckin() {
+
+        BookingDates dates = new BookingDates(DateUtil.today(), DateUtil.todayMinusDays(2));
+        return new BookingRequest(
+                generateRoomid(), generateFirstName(), generateLastName(),
+                generateDepositPaid(), dates,
+                generateEmail(), generatePhoneNumber());
+    }
+
+    // --- Email---
+    public static BookingRequest emailWithoutAt() {
+        return new BookingRequest(
+                generateRoomid(), generateFirstName(), generateLastName(),
+                generateDepositPaid(), DateUtil.validBookingDates(),
+                "testgmail.com", generatePhoneNumber());
+    }
+
+    // --- Phone number---
+    public static BookingRequest phoneNumberLengthLessThan_11() {
+        return new BookingRequest(
+                generateRoomid(), generateFirstName(), generateLastName(),
+                generateDepositPaid(), DateUtil.validBookingDates(),
+                generateEmail(), "12345");
+    }
+
+    public static BookingRequest phoneNumberLengthGreaterThan_21() {
+        return new BookingRequest(
+                generateRoomid(), generateFirstName(), generateLastName(),
+                generateDepositPaid(), DateUtil.validBookingDates(),
+                generateEmail(), "12345567890123456789012345");
+    }
+
+    public static BookingRequest bookingWithInvalidField(String field) {
+        return switch (field.toLowerCase()) {
+            case "roomid_negative" -> roomidNegative();
+            case "firstname_too_short" -> firstnameTooShort();
+            case "firstname_too_long" -> firstnameTooLong();
+            case "lastname_too_short" -> lastnameTooShort();
+            case "lastname_too_long" -> lastnameTooLong();
+            case "invalid_date_format" -> invalidDateFormat();
+            case "same_checkin_checkout" -> sameDate();
+            case "checkout_before_checkin" -> checkoutBeforeCheckin();
+            case "email_without_at" -> emailWithoutAt();
+            case "phone_lessthan_11" -> phoneNumberLengthLessThan_11();
+            case "phone_greaterthan_21" -> phoneNumberLengthGreaterThan_21();
+
+            default -> throw new IllegalArgumentException("Invalid field: " + field);
+        };
     }
 }
