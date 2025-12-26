@@ -1,6 +1,5 @@
 package com.booking.stepdefinitions;
 
-import com.booking.auth.TokenManager;
 import com.booking.client.AuthClient;
 import com.booking.config.ConfigKey;
 import com.booking.config.ConfigReader;
@@ -50,14 +49,11 @@ public class AuthSteps {
                 .statusCode(HTTPStatusCodes.OK)
                 .body("token", notNullValue())
                 .body("token", not(equalTo("")));
-
-        String token = response.jsonPath().getString("token");
-        TokenManager.setToken(token);
     }
 
     @When("I authenticate with username {string} and password {string}")
     public void i_authenticate_with_username_and_password(String username, String password) {
-        response = AuthClient.generateToken(username,password);
+        response = AuthClient.generateToken(username, password);
     }
 
     @Then("authentication should fail with status {int} and error message {string}")

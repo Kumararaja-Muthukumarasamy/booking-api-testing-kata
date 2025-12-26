@@ -15,7 +15,17 @@
         <rest-assured.version>5.5.2</rest-assured.version>
         <cucumber.version>7.22.2</cucumber.version>
     </properties>
-
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-bom</artifactId>
+                <version>2.25.0</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <dependencies>
         <!-- Cucumber Dependencies -->
         <dependency>
@@ -29,7 +39,6 @@
             <version>${cucumber.version}</version>
             <scope>test</scope>
         </dependency>
-
         <!-- JUnit 5 -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -37,7 +46,12 @@
             <version>5.12.2</version>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-suite</artifactId>
+            <version>1.12.2</version>
+            <scope>test</scope>
+        </dependency>
         <!-- Rest Assured -->
         <dependency>
             <groupId>io.rest-assured</groupId>
@@ -45,19 +59,31 @@
             <version>${rest-assured.version}</version>
             <scope>test</scope>
         </dependency>
-
         <!-- Jackson -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>2.17.2</version>
         </dependency>
-
         <!-- DataFaker -->
         <dependency>
             <groupId>net.datafaker</groupId>
             <artifactId>datafaker</artifactId>
             <version>2.5.2</version>
+        </dependency>
+        <!-- Log4j -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.19.0</version>
         </dependency>
     </dependencies>
 </project>

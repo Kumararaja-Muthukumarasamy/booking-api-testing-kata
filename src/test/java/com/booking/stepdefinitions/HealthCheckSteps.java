@@ -21,7 +21,7 @@ public class HealthCheckSteps {
                 ConfigReader.getProperty(ConfigKey.BASE_URL), "Base URL should be configured"
         );
         Assertions.assertNotNull(
-                ConfigReader.getProperty(ConfigKey.HEALTH_ENDPOINT),"Auth endpoint must be configured"
+                ConfigReader.getProperty(ConfigKey.HEALTH_ENDPOINT), "Health endpoint must be configured"
         );
     }
 
