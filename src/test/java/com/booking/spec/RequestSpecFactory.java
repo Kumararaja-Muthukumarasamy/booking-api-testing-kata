@@ -1,5 +1,6 @@
 package com.booking.spec;
 
+import com.booking.config.ConfigKey;
 import com.booking.config.ConfigReader;
 import io.restassured.builder.RequestSpecBuilder;
 
@@ -15,7 +16,7 @@ public class RequestSpecFactory {
     public static RequestSpecification getBaseRequestSpec() {
         return new RequestSpecBuilder()
                 .setContentType(JSON)
-                .setBaseUri(ConfigReader.getBaseUrl())
+                .setBaseUri(ConfigReader.getProperty(ConfigKey.BASE_URL))
                 .build();
     }
 }

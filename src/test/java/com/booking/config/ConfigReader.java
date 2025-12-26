@@ -1,5 +1,7 @@
 package com.booking.config;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.InputStream;
 import java.util.Properties;
 
@@ -19,11 +21,11 @@ public class ConfigReader {
         }
     }
 
-    public static String getBaseUrl() {
-        return properties.getProperty("base.url");
+    public static String getProperty(ConfigKey key) {
+        return properties.getProperty(key.value());
     }
 
-    public static String getProperty(String key) {
-        return properties.getProperty(key);
+    public static String getBaseUrl() {
+        return getProperty(ConfigKey.BASE_URL);
     }
 }
