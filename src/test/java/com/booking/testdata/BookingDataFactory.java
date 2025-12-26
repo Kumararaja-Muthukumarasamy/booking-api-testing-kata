@@ -212,7 +212,7 @@ public class BookingDataFactory {
                 generateEmail(), "12345567890123456789012345");
     }
 
-    public static BookingRequest bookingWithInvalidField(String field) {
+       public static BookingRequest bookingWithInvalidField(String field) {
         return switch (field.toLowerCase()) {
             case "roomid_negative" -> roomidNegative();
             case "firstname_too_short" -> firstnameTooShort();
@@ -229,4 +229,54 @@ public class BookingDataFactory {
             default -> throw new IllegalArgumentException("Invalid field: " + field);
         };
     }
-}
+
+    public static BookingRequest firstnameLength3() {
+        return new BookingRequest(
+                generateRoomid(), "Raj", generateLastName(),
+                generateDepositPaid(), DateUtil.validBookingDates(),
+                generateEmail(), generatePhoneNumber());
+    }
+    public static BookingRequest firstnameLength18() {
+        return new BookingRequest(
+                generateRoomid(), "RajiniRajiniRajini", generateLastName(),
+                generateDepositPaid(), DateUtil.validBookingDates(),
+                generateEmail(), generatePhoneNumber());
+    }
+
+    public static BookingRequest lastnameLength3() {
+        return new BookingRequest(
+                generateRoomid(), "Raj", generateLastName(),
+                generateDepositPaid(), DateUtil.validBookingDates(),
+                generateEmail(), generatePhoneNumber());
+    }
+    public static BookingRequest lastnameLength30() {
+        return new BookingRequest(
+                generateRoomid(),generateFirstName(), "WellingtonWellingtonWellington",
+                generateDepositPaid(), DateUtil.validBookingDates(),
+                generateEmail(), generatePhoneNumber());
+    }
+    public static BookingRequest phoneLength11() {
+        return new BookingRequest(
+                generateRoomid(),generateFirstName(), generateLastName(),
+                generateDepositPaid(), DateUtil.validBookingDates(),
+                generateEmail(), "12345678901");
+    }
+    public static BookingRequest phoneLength21() {
+        return new BookingRequest(
+                generateRoomid(),generateFirstName(), generateLastName(),
+                generateDepositPaid(), DateUtil.validBookingDates(),
+                generateEmail(), "123456789011234567890");
+    }
+    public static BookingRequest bookingWithValidBoundary (String field){
+            return switch (field.toLowerCase()) {
+                case "firstname_length_3" -> firstnameLength3();
+                case "firstname_length_18" -> firstnameLength18();
+                case "lastname_length_3" -> lastnameLength3();
+                case "lastname_length_30" -> lastnameLength30();
+                case "phone_length_11" -> phoneLength11();
+                case "phone_length_21" -> phoneLength21();
+
+                default -> throw new IllegalArgumentException("Invalid field: " + field);
+            };
+        }
+    }

@@ -99,4 +99,10 @@ public class CreateBookingSteps {
 
         Assertions.assertEquals(expectedMessage, actualError, "Validation error mismatch");
     }
+    @When("I create a booking with valid {string}")
+    public void i_create_a_booking_with_valid_field(String field) {
+        bookingRequest = BookingDataFactory.bookingWithValidBoundary(field);
+        response = CreateBookingClient.createBooking(bookingRequest);
+    }
+
 }

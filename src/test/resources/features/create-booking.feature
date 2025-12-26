@@ -32,7 +32,7 @@ Feature: Create Booking
     Then the booking should fail with status 409
     And the error message should be "Failed to create booking"
 
-  @booking-negative @boundary
+  @booking-negative @boundary-invalid
   Scenario Outline: Field-level boundary validation
     When I create a booking with invalid "<field>"
     Then the booking should fail with status <statusCode>
@@ -50,3 +50,16 @@ Feature: Create Booking
       | email_without_at        | 400        | must be a well-formed email address |
       | phone_lessthan_11       | 400        | size must be between 11 and 21      |
       | phone_greaterthan_21    | 400        | size must be between 11 and 21      |
+
+  @booking-positive @boundary-valid
+  Scenario Outline: Accept valid boundary values
+    When I create a booking with valid "<field>"
+    Then the booking should be created successfully
+    Examples:
+      | field              |
+      | firstname_length_3 |
+      | firstname_length_18|
+      | lastname_length_3 |
+      | lastname_length_30 |
+      | phone_length_11    |
+      | phone_length_21    |
