@@ -18,7 +18,7 @@ public class CreateBookingClient {
     public static Response createBooking(BookingRequest bookingRequest) {
         String endpoint = ConfigReader.getProperty(ConfigKey.BOOKING_ENDPOINT);
         logger.info("Sending Create Booking request to {}", endpoint);
-        Response response = given()
+        Response response = given().log().all()
                 .spec(RequestSpecFactory.getBaseRequestSpec())
                 .body(bookingRequest)
                 .when()

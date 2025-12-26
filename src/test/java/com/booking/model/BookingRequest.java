@@ -12,7 +12,7 @@ public class BookingRequest {
     public BookingRequest(int roomid, String firstname,
                           String lastname, boolean depositpaid,
                           BookingDates bookingdates,
-                          String email, String phone){
+                          String email, String phone) {
         this.roomid = roomid;
         this.firstname = firstname;
         this.lastname = lastname;
