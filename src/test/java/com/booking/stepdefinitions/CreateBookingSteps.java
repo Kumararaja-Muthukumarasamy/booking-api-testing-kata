@@ -35,6 +35,5 @@ public class CreateBookingSteps {
                         equalTo(bookingRequest.getBookingdates().getCheckin()))
                 .body("bookingdates.checkout",
                         equalTo(bookingRequest.getBookingdates().getCheckout()));
-
     }
 }

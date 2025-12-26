@@ -2,7 +2,8 @@ package com.booking.testdata;
 
 import com.booking.model.BookingDates;
 import com.booking.model.BookingRequest;
-import com.github.javafaker.Faker;
+
+import net.datafaker.Faker;
 
 import java.util.Random;
 
@@ -37,11 +38,11 @@ public class BookingDataFactory {
     }
 
     private static String generateFirstName() {
-        return faker.lorem().characters(3, 18, true);
+        return faker.name().firstName();
     }
 
     private static String generateLastName() {
-        return faker.lorem().characters(3, 18, true);
+        return faker.name().lastName();
     }
 
     private static boolean generateDepositPaid() {
