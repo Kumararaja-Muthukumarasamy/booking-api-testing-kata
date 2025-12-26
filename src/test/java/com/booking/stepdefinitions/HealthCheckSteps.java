@@ -1,10 +1,12 @@
 package com.booking.stepdefinitions;
 
 import com.booking.client.HealthCheckClient;
+import com.booking.config.ConfigKey;
 import com.booking.config.ConfigReader;
-import com.booking.constants.APIPaths;
 import com.booking.constants.HTTPStatusCodes;
-import io.cucumber.java.en.*;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Assertions;
 
@@ -16,10 +18,11 @@ public class HealthCheckSteps {
     @Given("the booking service configuration is available")
     public void the_booking_service_configuration_is_available() {
         Assertions.assertNotNull(
-                ConfigReader.getProperty("base.url"), "Base URL should be configured");
-
+                ConfigReader.getProperty(ConfigKey.BASE_URL), "Base URL should be configured"
+        );
         Assertions.assertNotNull(
-                APIPaths.HEALTH_CHECK, "Health check endpoint should be defined");
+                ConfigReader.getProperty(ConfigKey.HEALTH_ENDPOINT),"Auth endpoint must be configured"
+        );
     }
 
     @When("I check the booking service health")

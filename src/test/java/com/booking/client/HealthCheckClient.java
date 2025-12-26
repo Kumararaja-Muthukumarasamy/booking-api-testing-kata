@@ -1,5 +1,7 @@
 package com.booking.client;
 
+import com.booking.config.ConfigKey;
+import com.booking.config.ConfigReader;
 import com.booking.constants.APIPaths;
 import com.booking.spec.RequestSpecFactory;
 import io.restassured.response.Response;
@@ -15,6 +17,6 @@ public class HealthCheckClient {
         return given()
                 .spec(RequestSpecFactory.getBaseRequestSpec())
                 .when()
-                .get(APIPaths.HEALTH_CHECK);
+                .get(ConfigReader.getProperty(ConfigKey.HEALTH_ENDPOINT));
     }
 }
