@@ -3,6 +3,7 @@ package com.booking.testdata;
 import com.booking.model.BookingDates;
 import com.booking.model.BookingRequest;
 
+import com.booking.utils.DateUtil;
 import net.datafaker.Faker;
 
 import java.util.Random;
@@ -18,8 +19,8 @@ public class BookingDataFactory {
     public static BookingRequest validBooking() {
 
         BookingDates dates = new BookingDates(
-                "2026-01-05",
-                "2026-01-07"
+                DateUtil.today(),
+                DateUtil.todayPlusDays(2)
         );
 
         return new BookingRequest(
@@ -38,11 +39,13 @@ public class BookingDataFactory {
     }
 
     private static String generateFirstName() {
-        return faker.name().firstName();
+        String name = faker.name().firstName();
+        return name.substring(0, Math.min(name.length(), 18));
     }
 
     private static String generateLastName() {
-        return faker.name().lastName();
+        String name = faker.name().firstName();
+        return name.substring(0, Math.min(name.length(), 18));
     }
 
     private static boolean generateDepositPaid() {

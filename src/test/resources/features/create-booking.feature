@@ -1,8 +1,9 @@
 @booking
 Feature: Create Booking
-  A booking can be created for an available room
+  Creating a booking allows customers to reserve a room
 
   @positive-booking
   Scenario: Create a booking with valid details
+    Given the booking service is available
     When I create booking with valid details
     Then the booking should be created successfully
