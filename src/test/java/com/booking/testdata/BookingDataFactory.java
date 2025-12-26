@@ -1,6 +1,5 @@
 package com.booking.testdata;
 
-import com.booking.client.CreateBookingClient;
 import com.booking.model.BookingDates;
 import com.booking.model.BookingRequest;
 import com.booking.utils.DateUtil;
@@ -31,7 +30,7 @@ public class BookingDataFactory {
         );
     }
 
-    private static int generateRoomid() {
+    public static int generateRoomid() {
         return 100 + random.nextInt(900);
     }
 

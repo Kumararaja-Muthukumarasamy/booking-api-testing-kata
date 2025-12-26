@@ -13,14 +13,14 @@ import io.cucumber.java.en.When;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Assertions;
 
-import java.util.List;
-
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThan;
 
 public class CreateBookingSteps {
 
     private Response response;
     private BookingRequest bookingRequest;
+    private int roomId;
 
     @Given("the booking service is available")
     public void the_booking_service_is_available() {
@@ -64,10 +64,28 @@ public class CreateBookingSteps {
                 "Unexpected status code");
     }
 
+    @Then("the error messages should be {string}")
+    public void the_error_messages_should_be(String expectedMessage) {
+        String actualError = response.jsonPath().getString("errors[0]");
+        Assertions.assertEquals(expectedMessage, actualError, "Validation error mismatch");
+    }
+
+    @Given("a booking already exists for a room")
+    public void a_booking_already_exists_for_a_room() {
+        bookingRequest = BookingDataFactory.validBooking();
+        response = CreateBookingClient.createBooking(bookingRequest);
+        response.then().statusCode(HTTPStatusCodes.CREATED);
+    }
+
+    @When("I create another booking for the same room")
+    public void i_create_another_booking_for_the_same_room() {
+        response = CreateBookingClient.createBooking(bookingRequest);
+    }
+
     @Then("the error message should be {string}")
     public void the_error_message_should_be(String expectedMessage) {
-        List<String> errors = response.jsonPath().getList("errors");
-        Assertions.assertTrue(errors.contains(expectedMessage),
-                "Expected error message not found. Actual: " + errors);
+        String actualError = response.jsonPath().getString("error");
+        Assertions.assertEquals(expectedMessage, actualError,
+                "Error message mismatch");
     }
 }

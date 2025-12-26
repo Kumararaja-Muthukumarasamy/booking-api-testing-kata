@@ -11,10 +11,10 @@ Feature: Create Booking
     Then the booking should be created successfully
 
   @booking-negative @mandatory
-  Scenario Outline: Create booking with misGiven the booking service is available
+  Scenario Outline: Create booking with missing mandatory field
     When I create a booking with missing "<field>"
     Then the booking should fail with status 400
-    And the error message should be "<errorMessage>"
+    And the error messages should be "<errorMessage>"
     Examples:
       | field       | errorMessage                       |
       | roomid      | must be greater than or equal to 1 |
@@ -24,3 +24,10 @@ Feature: Create Booking
       | checkout    | must not be null                   |
       | email       | Failed to create booking           |
       | phone       | Failed to create booking           |
+
+  @booking-negative @duplicate
+  Scenario: Create booking with duplicate room id
+    And a booking already exists for a room
+    When I create another booking for the same room
+    Then the booking should fail with status 409
+    And the error message should be "Failed to create booking"
