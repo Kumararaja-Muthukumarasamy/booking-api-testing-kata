@@ -1,11 +1,12 @@
 package com.booking.client;
 
-import static io.restassured.RestAssured.*;
-
-import com.booking.constants.APIPaths;
+import com.booking.config.ConfigKey;
+import com.booking.config.ConfigReader;
 import com.booking.model.AuthRequest;
 import com.booking.spec.RequestSpecFactory;
 import io.restassured.response.Response;
+
+import static io.restassured.RestAssured.given;
 
 public class AuthClient {
     private AuthClient() {
@@ -18,6 +19,6 @@ public class AuthClient {
                 .spec(RequestSpecFactory.getBaseRequestSpec())
                 .body(request)
                 .when()
-                .post(APIPaths.AUTH_LOGIN);
+                .post(ConfigReader.getProperty(ConfigKey.AUTH_ENDPOINT));
     }
 }
