@@ -61,6 +61,33 @@ public class UpdateBookingSteps {
 
     }
 
+    @When("I update the booking with missing {string}")
+    public void i_update_the_booking_with_missing_field(String field) {
+        // Build a booking request with the specified field missing
+        updatedBooking = BookingDataFactory.bookingWithoutField(field);
+
+        // Send the update request with the invalid payload
+        response = UpdateBookingClient.updateBooking(
+                bookingId,
+                updatedBooking,
+                token
+        );
+    }
+
+    @When("I update the booking with invalid {string}")
+    public void i_update_the_booking_with_invalid_field(String field) {
+        // Build a booking request with the specified invalid field
+        updatedBooking = BookingDataFactory.bookingWithInvalidField(field);
+
+        // Send the update request with the invalid payload
+        response = UpdateBookingClient.updateBooking(
+                bookingId,
+                updatedBooking,
+                token
+        );
+    }
+
+
     // ---------- THEN ----------
 
     @Then("the booking should be updated successfully")
@@ -94,4 +121,17 @@ public class UpdateBookingSteps {
         System.out.println("Retrieved roomid: " + getResponse.jsonPath().getInt(BookingResponseKeys.ROOM_ID));
 
     }
+    @Then("the update request should fail with status {int} and error message {string}")
+    public void the_update_request_should_fail_with_status_and_error_message(int statusCode, String errorMessage) {
+        response.then().statusCode(statusCode);
+
+        // Handle both "error" (string) and "errors" (list)
+        String body = response.asString();
+        if (body.contains("\"errors\"")) {
+            response.then().body("errors", hasItem(errorMessage));
+        } else {
+            response.then().body("error", equalTo(errorMessage));
+        }
+    }
+
 }

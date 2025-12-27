@@ -279,4 +279,21 @@ public class BookingDataFactory {
                 default -> throw new IllegalArgumentException("Invalid field: " + field);
             };
         }
+    public static BookingRequest bookingWithoutField(String field) {
+        return switch (field.toLowerCase()) {
+            case "firstname" -> new BookingRequest(
+                    generateRoomid(), null, generateLastName(),
+                    generateDepositPaid(),DateUtil.validBookingDates(),
+                    generateEmail(), generatePhoneNumber()
+            );
+            case "checkin" -> {
+                BookingDates dates = new BookingDates(null, DateUtil.todayPlusDays(2));
+                yield new BookingRequest(
+                        generateRoomid(), generateFirstName(), generateLastName(),
+                        generateDepositPaid(), dates, generateEmail(), generatePhoneNumber()
+                );
+            }
+            default -> throw new IllegalArgumentException("Unsupported missing field: " + field);
+        };
     }
+}

@@ -16,19 +16,17 @@ Feature: Update Booking
   @update-booking-negative @mandatory
   Scenario Outline: Update booking with missing mandatory field
     When I update the booking with missing "<field>"
-    Then the update request should fail with status 400
-    And the error messages should be "<errorMessage>"
+    Then the update request should fail with status <statusCode> and error message "<errorMessage>"
 
     Examples:
-      | field     | errorMessage                  |
-      | firstname | Firstname should not be blank |
-      | checkin   | must not be null              |
+      | field     | statusCode | errorMessage                  |
+      | firstname | 400        | Firstname should not be blank |
+      | checkin   | 400        | must not be null              |
 
   @update-booking-negative @boundary-invalid
   Scenario Outline: Field-level boundary validation on update
     When I update the booking with invalid "<field>"
-    Then the update request should fail with status <statusCode>
-    And the error messages should be "<errorMessage>"
+    Then the update request should fail with status <statusCode> and error message "<errorMessage>"
 
     Examples:
       | field                   | statusCode | errorMessage                        |
@@ -49,13 +47,13 @@ Feature: Update Booking
     Then the booking should be updated successfully
 
     Examples:
-      | field              |
-      | firstname_length_3 |
-      | firstname_length_18|
-      | lastname_length_3  |
-      | lastname_length_30 |
-      | phone_length_11    |
-      | phone_length_21    |
+      | field               |
+      | firstname_length_3  |
+      | firstname_length_18 |
+      | lastname_length_3   |
+      | lastname_length_30  |
+      | phone_length_11     |
+      | phone_length_21     |
 
   @update-booking-negative @auth
   Scenario Outline: Update booking with invalid or missing token
@@ -64,7 +62,7 @@ Feature: Update Booking
     Then the update request should fail with status <statusCode> and error message "<errorMessage>"
 
     Examples:
-      | tokenType | statusCode | errorMessage             |
-      | missing   | 401        | Authentication required  |
+      | tokenType | statusCode | errorMessage                 |
+      | missing   | 401        | Authentication required      |
       | empty     | 403        | Failed to fetch booking: 403 |
       | invalid   | 403        | Failed to fetch booking: 403 |
