@@ -1,24 +1,27 @@
 @auth
 Feature: Authentication API
-  Authentication allows users to access protected booking services
+  The authentication API generates tokens for accessing protected booking endpoints.
 
   Background:
     Given the authentication service is available
 
-  @auth-positive
-  Scenario: Generate Authentication token
+  @auth-positive @contract
+  Scenario: Generate authentication token with valid credentials
     When I authenticate with valid credentials
-    Then an authentication token should be returned
+    Then a valid authentication token should be returned
+    And the authentication request should match the auth-request schema
+    And the authentication response should match the auth-response schema
 
-  @auth-negative
-  Scenario Outline: Authenticate with invalid credentials
+  @auth-negative @contract
+  Scenario Outline: Authentication fails with invalid or missing credentials
     When I authenticate with username "<username>" and password "<password>"
-    Then authentication should fail with status 401 and error message "Invalid credentials"
+    Then authentication should fail with status 401 and error "Invalid credentials"
+    And the authentication response should match the auth-response schema
     Examples:
       | username | password |
       | wrong    | password |
       | admin    | wrong    |
       | wrong    | wrong    |
+      |          |          |
       | admin    |          |
       |          | password |
-      |          |          |

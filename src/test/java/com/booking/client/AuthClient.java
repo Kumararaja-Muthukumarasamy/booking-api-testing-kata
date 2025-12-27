@@ -14,7 +14,6 @@ public class AuthClient {
     private static final Logger logger = LoggerUtil.getLogger(AuthClient.class);
 
     private AuthClient() {
-
     }
 
     public static Response generateToken(String username, String password) {
@@ -30,6 +29,7 @@ public class AuthClient {
                 .post(endpoint);
 
         logger.debug("Authentication response status: {}", response.getStatusCode());
+        logger.debug("Authentication response body: {}", response.asString());
         return response;
     }
 }
