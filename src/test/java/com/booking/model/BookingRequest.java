@@ -42,11 +42,4 @@ public class BookingRequest {
         return bookingdates;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
 }

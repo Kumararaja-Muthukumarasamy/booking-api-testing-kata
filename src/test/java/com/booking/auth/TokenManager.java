@@ -6,6 +6,7 @@ import com.booking.config.ConfigReader;
 import com.booking.constants.HTTPStatusCodes;
 
 public final class TokenManager {
+
     private static String token;
 
     private TokenManager() {
