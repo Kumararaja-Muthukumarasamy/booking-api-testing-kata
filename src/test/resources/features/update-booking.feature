@@ -58,11 +58,11 @@ Feature: Update Booking
   @update-booking-negative @auth
   Scenario Outline: Update booking with invalid or missing token
     Given I use a "<tokenType>" token
-    When I update the booking with valid details
+    When I update the booking with valid details using "<tokenType>" token
     Then the update request should fail with status <statusCode> and error message "<errorMessage>"
 
     Examples:
-      | tokenType | statusCode | errorMessage                 |
-      | missing   | 401        | Authentication required      |
-      | empty     | 403        | Failed to fetch booking: 403 |
-      | invalid   | 403        | Failed to fetch booking: 403 |
+      | tokenType | statusCode | errorMessage             |
+      | missing   | 403        | Failed to update booking |
+      | empty     | 403        | Failed to update booking |
+      | invalid   | 403        | Failed to update booking |

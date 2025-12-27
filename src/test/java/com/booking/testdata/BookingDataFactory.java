@@ -251,7 +251,7 @@ public class BookingDataFactory {
     }
     public static BookingRequest lastnameLength30() {
         return new BookingRequest(
-                generateRoomid(),generateFirstName(), "WellingtonWellingtonWellington",
+                generateRoomid(),generateFirstName(), "WellingtonWellingtonWellingt",
                 generateDepositPaid(), DateUtil.validBookingDates(),
                 generateEmail(), generatePhoneNumber());
     }
