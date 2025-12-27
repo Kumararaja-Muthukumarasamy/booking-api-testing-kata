@@ -11,4 +11,6 @@ public final class BookingResponseKeys {
     public static final String DEPOSIT_PAID = "depositpaid";
     public static final String CHECKIN = "bookingdates.checkin";
     public static final String CHECKOUT = "bookingdates.checkout";
+    public static final String EMAIL = "email";
+    public static final String PHONE = "phone";
 }

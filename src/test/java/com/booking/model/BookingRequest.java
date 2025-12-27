@@ -22,9 +22,7 @@ public class BookingRequest {
         this.phone = phone;
     }
 
-    public int getRoomid() {
-        return roomid;
-    }
+    public int getRoomid() { return roomid; }
 
     public String getFirstname() {
         return firstname;
@@ -42,4 +40,7 @@ public class BookingRequest {
         return bookingdates;
     }
 
+    public String getEmail() { return email; }
+
+    public String getPhone() { return phone; }
 }
