@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "GetBookingResponse",
+  "type": "object",
+  "properties": {
+    "bookingid": { "type": "integer" },
+    "roomid": { "type": "integer" },
+    "firstname": { "type": "string" },
+    "lastname": { "type": "string" },
+    "depositpaid": { "type": "boolean" },
+    "bookingdates": {
+      "type": "object",
+      "properties": {
+        "checkin": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "checkout": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        }
+      },
+      "required": ["checkin", "checkout"],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "bookingid",
+    "roomid",
+    "firstname",
+    "lastname",
+    "depositpaid",
+    "bookingdates"
+  ],
+  "additionalProperties": false
+}

@@ -11,6 +11,7 @@ Feature: Get Booking by ID
     And I am authenticated
     When I retrieve the booking by ID
     Then the booking details should be returned successfully
+    And the get booking response should match the schema
 
   @get-booking-negative @auth
   Scenario Outline: Unauthorized or forbidden access to booking
@@ -32,11 +33,7 @@ Feature: Get Booking by ID
     Then the request should fail with status <statusCode> and error message "<errorMessage>"
 
     Examples:
-      | bookingId       | statusCode | errorMessage                   |
-      | negative value  | 404        | Not Found                      |
-      | zero            | 404        | Failed to fetch booking: 404   |
-      | invalid         | 404        | Failed to fetch booking: 404   |
-
-
-
-
+      | bookingId       | statusCode | errorMessage                 |
+      | negative value  | 404        | Not Found                    |
+      | zero            | 404        | Failed to fetch booking: 404 |
+      | invalid         | 404        | Failed to fetch booking: 404 |
