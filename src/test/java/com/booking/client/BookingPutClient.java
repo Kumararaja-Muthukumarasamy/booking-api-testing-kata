@@ -3,18 +3,18 @@ package com.booking.client;
 import com.booking.config.ConfigKey;
 import com.booking.config.ConfigReader;
 import com.booking.spec.RequestSpecFactory;
-import com.booking.utils.LoggerUtil;
+import com.booking.utils.logging.LoggerUtil;
 import io.restassured.response.Response;
 import org.apache.logging.log4j.Logger;
 
 import static io.restassured.RestAssured.given;
 
-public class UpdateBookingPutClient {
+public class BookingPutClient {
 
     private static final Logger logger =
-            LoggerUtil.getLogger(UpdateBookingPutClient.class);
+            LoggerUtil.getLogger(BookingPutClient.class);
 
-    private UpdateBookingPutClient() {
+    private BookingPutClient() {
     }
 
     public static Response updateBooking(

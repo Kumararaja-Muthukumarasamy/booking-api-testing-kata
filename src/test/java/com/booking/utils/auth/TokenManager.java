@@ -3,7 +3,7 @@ package com.booking.auth;
 import com.booking.client.AuthClient;
 import com.booking.config.ConfigKey;
 import com.booking.config.ConfigReader;
-import com.booking.constants.HTTPStatusCodes;
+import com.booking.constants.api.HTTPStatusCodes;
 
 public final class TokenManager {
 

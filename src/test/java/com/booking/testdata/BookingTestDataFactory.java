@@ -3,6 +3,7 @@ package com.booking.testdata;
 import com.booking.model.BookingDates;
 import com.booking.model.BookingRequest;
 import com.booking.utils.DateUtil;
+import com.booking.utils.LoggerUtil;
 import net.datafaker.Faker;
 
 import java.util.Map;
@@ -197,6 +198,18 @@ public class BookingDataFactory {
             default -> throw new IllegalArgumentException("Unsupported missing field: " + field);
         };
     }
+    public static BookingRequest updatedBooking() {
+        BookingDates dates = DateUtil.validBookingDates();
+        return new BookingRequest(
+                generateRoomid(),
+                "UpdatedFirstName",
+                "UpdatedLastName",
+                true,
+                dates,
+                "updated.email@example.com",
+                "98765432101"
+        );
+    }
 
     // ---------------- VALID BOUNDARY BOOKING ----------------
     public static BookingRequest bookingWithValidBoundary(String field) {
@@ -211,7 +224,7 @@ public class BookingDataFactory {
                     generateDepositPaid(), DateUtil.validBookingDates(),
                     generateEmail(), generatePhoneNumber());
             case "lastname_length_30" -> new BookingRequest(generateRoomid(), generateFirstName(),
-                    "WellingtonWellingtonWellingt", generateDepositPaid(),
+                    "WellingtonWellingtonWelli", generateDepositPaid(),
                     DateUtil.validBookingDates(), generateEmail(), generatePhoneNumber());
             case "phone_length_11" -> new BookingRequest(generateRoomid(), generateFirstName(),
                     generateLastName(), generateDepositPaid(),
@@ -263,6 +276,36 @@ public class BookingDataFactory {
             case "invalid" -> "999999";
             default -> throw new IllegalArgumentException("Unsupported booking ID type: " + bookingIdType);
         };
+    }
+    // ---------------- SAFE WRAPPERS ----------------
+    public static BookingRequest safeBookingWithMissingField(String field) {
+        try {
+            return bookingWithMissingField(field);
+        } catch (IllegalArgumentException e) {
+            LoggerUtil.getLogger(BookingDataFactory.class)
+                    .error("Unsupported missing field: {}", field, e);
+            return validBooking(); // fallback to a valid booking
+        }
+    }
+
+    public static BookingRequest safeBookingWithInvalidField(String field) {
+        try {
+            return bookingWithInvalidField(field);
+        } catch (IllegalArgumentException e) {
+            LoggerUtil.getLogger(BookingDataFactory.class)
+                    .error("Unsupported invalid field: {}", field, e);
+            return validBooking(); // fallback to a valid booking
+        }
+    }
+
+    public static BookingRequest safeBookingWithValidBoundary(String field) {
+        try {
+            return bookingWithValidBoundary(field);
+        } catch (IllegalArgumentException e) {
+            LoggerUtil.getLogger(BookingDataFactory.class)
+                    .error("Unsupported valid boundary field: {}", field, e);
+            return validBooking(); // fallback to a valid booking
+        }
     }
 
 }

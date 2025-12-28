@@ -3,7 +3,7 @@ package com.booking.client;
 import com.booking.config.ConfigKey;
 import com.booking.config.ConfigReader;
 import com.booking.spec.RequestSpecFactory;
-import com.booking.utils.LoggerUtil;
+import com.booking.utils.logging.LoggerUtil;
 import io.restassured.response.Response;
 import org.apache.logging.log4j.Logger;
 
@@ -37,7 +37,7 @@ public class DeleteBookingClient {
         logger.info("Sending DELETE request without ID to {}", endpoint);
 
         Response response = given()
-                .spec(token != null ? RequestSpecFactory.getAuthenticatedSpec()
+                .spec(token != null ? RequestSpecFactory.getAuthenticatedRequestSpec()
                         : RequestSpecFactory.getBaseRequestSpec())
                 .when()
                 .delete(endpoint);

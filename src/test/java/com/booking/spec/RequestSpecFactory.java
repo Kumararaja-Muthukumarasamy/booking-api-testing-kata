@@ -1,6 +1,6 @@
 package com.booking.spec;
 
-import com.booking.auth.TokenManager;
+import com.booking.utils.auth.TokenManager;
 import com.booking.config.ConfigKey;
 import com.booking.config.ConfigReader;
 import io.restassured.builder.RequestSpecBuilder;
@@ -11,21 +11,25 @@ import io.restassured.specification.RequestSpecification;
 import static io.restassured.http.ContentType.JSON;
 
 public class RequestSpecFactory {
-    private RequestSpecFactory() {
 
-    }
+    private RequestSpecFactory() {}
 
     public static RequestSpecification getBaseRequestSpec() {
         return new RequestSpecBuilder()
+                .setBaseUri(getBaseUrl())
                 .setContentType(JSON)
-                .setBaseUri(ConfigReader.getProperty(ConfigKey.BASE_URL))
                 .build();
     }
-    public static RequestSpecification getAuthenticatedSpec() {
+
+    public static RequestSpecification getAuthenticatedRequestSpec() {
         return new RequestSpecBuilder()
-                .setBaseUri(ConfigReader.getProperty(ConfigKey.BASE_URL))
+                .setBaseUri(getBaseUrl())
+                .setContentType(JSON)
                 .addHeader("Cookie", "token=" + TokenManager.getToken())
-                .setContentType(ContentType.JSON)
                 .build();
+    }
+
+    private static String getBaseUrl() {
+        return ConfigReader.getProperty(ConfigKey.BASE_URL);
     }
 }

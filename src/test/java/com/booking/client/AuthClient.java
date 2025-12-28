@@ -4,7 +4,7 @@ import com.booking.config.ConfigKey;
 import com.booking.config.ConfigReader;
 import com.booking.model.AuthRequest;
 import com.booking.spec.RequestSpecFactory;
-import com.booking.utils.LoggerUtil;
+import com.booking.utils.logging.LoggerUtil;
 import io.restassured.response.Response;
 import org.apache.logging.log4j.Logger;
 
