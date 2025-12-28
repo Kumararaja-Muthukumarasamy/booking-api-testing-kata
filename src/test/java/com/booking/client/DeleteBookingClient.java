@@ -11,37 +11,34 @@ import static io.restassured.RestAssured.given;
 
 public class DeleteBookingClient {
 
-    private static final Logger logger =
-            LoggerUtil.getLogger(DeleteBookingClient.class);
+    private static final Logger logger = LoggerUtil.getLogger(DeleteBookingClient.class);
 
     private DeleteBookingClient() {
-        // prevent instantiation
-    }
 
-    private static io.restassured.specification.RequestSpecification baseRequest(String token) {
-        return given()
-                .spec(RequestSpecFactory.getBaseRequestSpec())
-                .header("Cookie", token == null ? "" : "token=" + token);
     }
-
     public static Response deleteBooking(int bookingId, String token) {
         String endpoint = ConfigReader.getProperty(ConfigKey.BOOKING_ENDPOINT);
-        logger.info("Deleting booking with ID {}", bookingId);
+        logger.info("Sending DELETE request for booking ID {} to {}", bookingId, endpoint);
 
-        Response response = baseRequest(token)
+        Response response = given()
+                .spec(RequestSpecFactory.getBaseRequestSpec())
+                .header("Cookie", token != null ? "token=" + token : "")
                 .pathParam("id", bookingId)
                 .when()
                 .delete(endpoint + "/{id}");
 
         logger.debug("Delete booking response status: {}", response.getStatusCode());
+        logger.debug("Delete booking response body: {}", response.asString());
         return response;
     }
 
     public static Response deleteBookingWithoutId(String token) {
         String endpoint = ConfigReader.getProperty(ConfigKey.BOOKING_ENDPOINT);
-        logger.info("Deleting booking without ID");
+        logger.info("Sending DELETE request without ID to {}", endpoint);
 
-        Response response = baseRequest(token)
+        Response response = given()
+                .spec(token != null ? RequestSpecFactory.getAuthenticatedSpec()
+                        : RequestSpecFactory.getBaseRequestSpec())
                 .when()
                 .delete(endpoint);
 

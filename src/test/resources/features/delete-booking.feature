@@ -1,6 +1,9 @@
 @delete-booking
 Feature: Delete booking
 
+  Background:
+    Given the booking service for DeleteBooking is available
+
   @delete-positive
   Scenario: Delete booking with valid ID and token
     Given a valid booking exists for delete
@@ -12,14 +15,14 @@ Feature: Delete booking
   Scenario Outline: Delete booking with valid token and invalid id
     Given I am authenticated with valid token for delete
     When I delete the booking using id "<id>"
-    Then the delete request should fail with status <statusCode>
+    Then the delete request should fail with status <statusCode> and error message "<errorMessage>"
 
     Examples:
-      | id   | statusCode |
-      | 0    | 500        |
-      | -1   | 500        |
-      | 9999 | 500        |
-      | null | 500        |
+      | id   | statusCode | errorMessage             |
+      | 0    | 500        | Failed to delete booking |
+      | -1   | 500        | Failed to delete booking |
+      | 9999 | 500        | Failed to delete booking |
+      | null | 500        | Failed to delete booking |
 
   @delete-negative @delete-no-id
   Scenario: Delete booking without ID
