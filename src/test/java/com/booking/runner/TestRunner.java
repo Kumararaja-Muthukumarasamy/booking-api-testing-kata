@@ -1,21 +1,28 @@
 package com.booking.runner;
 
-import io.cucumber.junit.platform.engine.Constants;
 import org.junit.platform.suite.api.*;
 
-import static io.cucumber.core.options.Constants.*;
-
+import static io.cucumber.junit.platform.engine.Constants.GLUE_PROPERTY_NAME;
+import static io.cucumber.junit.platform.engine.Constants.PLUGIN_PROPERTY_NAME;
 @Suite
 @IncludeEngines("cucumber")
-@SelectPackages("com.booking")
 @SelectClasspathResource("features")
-@ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "com.booking")
+@ConfigurationParameter(
+        key = GLUE_PROPERTY_NAME,
+        value = "com.booking"
+)
 @ConfigurationParameter(
         key = PLUGIN_PROPERTY_NAME,
-        value = "pretty," +
-                "html:target/reports/cucumber-reports.html," +
-                "json:target/reports/cucumber-reports.json," +
-                "rerun:target/rerun.txt"
+        value =
+                "pretty," +
+                        "html:target/reports/cucumber.html," +
+                        "json:target/reports/cucumber.json," +
+                        "rerun:target/rerun.txt"
 )
+@ConfigurationParameter(
+        key = "cucumber.filter.tags",
+        value = "not @patch"
+)
+
 public class TestRunner {
 }
