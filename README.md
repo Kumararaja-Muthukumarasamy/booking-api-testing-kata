@@ -82,6 +82,7 @@ External Swagger editors such as https://editor.swagger.io/  may be used for vis
 
 The project follows clean code and modular design principles with a focus on
 readability, maintainability, and low cognitive complexity.
+ * Note: Install CodeMetrics plugin in IntelliJ IDEA to monitor code complexity.
 
 #### Metrics Guidelines
  - Cognitive complexity is generally kept **≤ 5** per method
@@ -102,6 +103,7 @@ readability, maintainability, and low cognitive complexity.
 
 ### Folder Structure & Responsibilities
 
+```
 src/test/java
  └── com.booking
      ├── client          → API clients (one per endpoint)
@@ -130,6 +132,7 @@ src/test/resources
 
 pom.xml                 → Maven build configuration
 README.md               → Project documentation
+```
 
 ### Getting Started (Clone & Setup)
 
@@ -197,11 +200,12 @@ Update the configuration file: src/test/resources/config.properties
   *  Cucumber HTML Report – Human-readable execution report
   *  Cucumber JSON Report – Used for further processing and integrations
 
-   target/
-   └── reports/
+```
+target/
+ └── reports/
      ├── cucumber-reports.html
      └── cucumber-reports.json
-     
+```
   These reports provide basic execution details for scenarios and steps.
 
 #### Running with mvn test verify
@@ -210,22 +214,24 @@ Update the configuration file: src/test/resources/config.properties
 In addition to the standard Cucumber reports, this command generates a detailed aggregated HTML report using the reporting plugin.
 
 Location:
+```
 target/
  └── cucumber-html-reports/
      └── overview-features.html
-
+```
 This report includes:
-    >  Feature-wise execution summary
-    >  Scenario and step-level details
-    >  Passed / failed / skipped statistics
+    *  Feature-wise execution summary
+    *  Scenario and step-level details
+    *  Passed / failed / skipped statistics
 
 #### Failed Scenarios (Rerun File)
    When tests fail, failed scenarios are captured in a rerun file.
 
- Location:
+ Location: 
+ ```
          target/
             └── rerun.txt
- 
+ ```
 This file contains the list of failed scenarios and can be used for analysis or selective reruns.
 
 The rerun file is generated via the configured Cucumber plugin:
@@ -301,11 +307,21 @@ The rerun file is generated via the configured Cucumber plugin:
 
 ### Observations & Known Limitations
 
-  #### Current Observations
+   *  API behavior does not always align with the Swagger documentation
+      (validation rules, response fields, and status codes may differ)
+   *  Some fields documented in the API (such as email, phone, and roomId) are not consistently 
+      reflected in Create, Get, or Update responses
+   *  Create Booking API may intermittently return unexpected server errors or status codes
+      (e.g., 201 Created vs documented 200 OK)
+   *  Update Booking API (PUT) typically returns only a success flag instead of the full updated booking object
+   *  PATCH API frequently responds with 405 Method Not Allowed and is excluded from full-suite execution
+   *  Swagger UI links are intermittently unavailable due to external system limitations
+   *  A few scenarios may show inconsistent behavior due to shared application state
 
-   *  PATCH scenarios pass when run independently
-   *  PATCH scenarios are excluded from full-suite execution
-   *  Some scenarios may intermittently fail due to shared state
+ #### Note:
+        
+ These observations are based on runtime behavior of an externally maintained application and are documented 
+ to set clear expectations during test execution.
 
 ### Final Note
 
