@@ -9,12 +9,12 @@ import org.apache.logging.log4j.Logger;
 
 import static io.restassured.RestAssured.given;
 
-public class UpdateBookingClient {
+public class UpdateBookingPutClient {
 
     private static final Logger logger =
-            LoggerUtil.getLogger(UpdateBookingClient.class);
+            LoggerUtil.getLogger(UpdateBookingPutClient.class);
 
-    private UpdateBookingClient() {
+    private UpdateBookingPutClient() {
     }
 
     public static Response updateBooking(
@@ -28,7 +28,7 @@ public class UpdateBookingClient {
 
         Response response = given()
                 .spec(RequestSpecFactory.getBaseRequestSpec())
-                .header("Cookie", "token=" + token)
+                .header("Cookie", token != null && !token.isBlank() ? "token=" + token : "")
                 .pathParam("id", bookingId)
                 .body(requestBody)
                 .when()

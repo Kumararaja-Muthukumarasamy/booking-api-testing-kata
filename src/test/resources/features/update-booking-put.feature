@@ -5,13 +5,14 @@ Feature: Update Booking
   Background:
     Given the booking service is available
     And a valid booking exists
-    And I am authenticated with valid token
+    And I am authenticated with valid token for update
 
   @update-booking-positive
   Scenario: Update booking with valid token and valid booking ID
     When I update the booking with valid details
     Then the booking should be updated successfully
     And retrieving the booking should reflect updated details
+    And the update request should match the request schema
 
   @update-booking-negative @mandatory
   Scenario Outline: Update booking with missing mandatory field
@@ -63,6 +64,7 @@ Feature: Update Booking
 
     Examples:
       | tokenType | statusCode | errorMessage             |
-      | missing   | 403        | Failed to update booking |
-      | empty     | 403        | Failed to update booking |
+      | missing   | 401        | Authentication required  |
+      | empty     | 401        | Authentication required  |
       | invalid   | 403        | Failed to update booking |
+
