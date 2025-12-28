@@ -1,4 +1,4 @@
-package com.booking.utils;
+package com.booking.utils.logging;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

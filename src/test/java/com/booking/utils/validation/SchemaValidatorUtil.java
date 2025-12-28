@@ -1,4 +1,4 @@
-package com.booking.utils;
+package com.booking.utils.validation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.module.jsv.JsonSchemaValidator;

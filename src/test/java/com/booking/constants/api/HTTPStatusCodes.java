@@ -1,4 +1,4 @@
-package com.booking.constants;
+package com.booking.constants.api;
 
 import org.apache.http.protocol.HTTP;
 

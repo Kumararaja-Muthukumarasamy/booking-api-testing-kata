@@ -1,4 +1,4 @@
-package com.booking.utils;
+package com.booking.utils.data;
 
 public class TokenFactory {
     private TokenFactory() {

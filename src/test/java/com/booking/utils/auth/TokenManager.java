@@ -1,4 +1,4 @@
-package com.booking.auth;
+package com.booking.utils.auth;
 
 import com.booking.client.AuthClient;
 import com.booking.config.ConfigKey;

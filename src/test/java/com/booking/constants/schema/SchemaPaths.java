@@ -1,4 +1,4 @@
-package com.booking.constants;
+package com.booking.constants.schema;
 
 public class SchemaPaths {
 

@@ -2,19 +2,19 @@ package com.booking.testdata;
 
 import com.booking.model.BookingDates;
 import com.booking.model.BookingRequest;
-import com.booking.utils.DateUtil;
-import com.booking.utils.LoggerUtil;
+import com.booking.utils.data.DateUtil;
+import com.booking.utils.logging.LoggerUtil;
 import net.datafaker.Faker;
 
 import java.util.Map;
 import java.util.Random;
 
-public class BookingDataFactory {
+public class BookingTestDataFactory {
 
     private static final Faker faker = new Faker();
     private static final Random random = new Random();
 
-    private BookingDataFactory() {
+    private BookingTestDataFactory() {
     }
 
     // ---------------- VALID BOOKING ----------------
@@ -282,7 +282,7 @@ public class BookingDataFactory {
         try {
             return bookingWithMissingField(field);
         } catch (IllegalArgumentException e) {
-            LoggerUtil.getLogger(BookingDataFactory.class)
+            LoggerUtil.getLogger(BookingTestDataFactory.class)
                     .error("Unsupported missing field: {}", field, e);
             return validBooking(); // fallback to a valid booking
         }
@@ -292,7 +292,7 @@ public class BookingDataFactory {
         try {
             return bookingWithInvalidField(field);
         } catch (IllegalArgumentException e) {
-            LoggerUtil.getLogger(BookingDataFactory.class)
+            LoggerUtil.getLogger(BookingTestDataFactory.class)
                     .error("Unsupported invalid field: {}", field, e);
             return validBooking(); // fallback to a valid booking
         }
@@ -302,7 +302,7 @@ public class BookingDataFactory {
         try {
             return bookingWithValidBoundary(field);
         } catch (IllegalArgumentException e) {
-            LoggerUtil.getLogger(BookingDataFactory.class)
+            LoggerUtil.getLogger(BookingTestDataFactory.class)
                     .error("Unsupported valid boundary field: {}", field, e);
             return validBooking(); // fallback to a valid booking
         }

@@ -9,7 +9,7 @@ public class ConfigReader {
     static {
         try (InputStream input = ConfigReader.class
                 .getClassLoader()
-                .getResourceAsStream("config.properties")) {
+                .getResourceAsStream("spec/config.properties")) {
             if (input == null) {
                 throw new RuntimeException("config.properties not found");
             }

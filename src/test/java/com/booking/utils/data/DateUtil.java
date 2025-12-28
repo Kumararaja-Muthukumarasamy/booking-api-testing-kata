@@ -1,4 +1,4 @@
-package com.booking.utils;
+package com.booking.utils.data;
 
 import com.booking.model.BookingDates;
 
