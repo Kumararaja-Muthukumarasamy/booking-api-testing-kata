@@ -1,8 +1,6 @@
-name: Hotel Booking  - API Automation
+name: Hotel Booking API Automation
 
 on:
-  push:
-    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -19,5 +17,5 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Run Cucumber Tests
+      - name: Run tests
         run: mvn clean test
