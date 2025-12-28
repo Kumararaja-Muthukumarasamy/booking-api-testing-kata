@@ -8,6 +8,8 @@ public class SchemaPaths {
 
     public static final String AUTH_REQUEST_SCHEMA = "schemas/auth/auth-request-schema.json";
     public static final String AUTH_RESPONSE_SCHEMA = "schemas/auth/auth-response-schema.json";
-    public static final String BOOKING_SCHEMA = "schemas/booking/booking-schema.json";
+    public static final String CREATE_BOOKING_REQUEST_SCHEMA = "schemas/booking/create-booking-request-schema.json";
+    public static final String CREATE_BOOKING_RESPONSE_SCHEMA = "schemas/booking/create-booking-response-schema.json";
+
     public static final String ERROR_SCHEMA = "schemas/error-schema.json";
 }

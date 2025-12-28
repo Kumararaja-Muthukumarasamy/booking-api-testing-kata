@@ -9,6 +9,8 @@ Feature: Create Booking
   Scenario: Create a booking with valid details
     When I create booking with valid details
     Then the booking should be created successfully
+    And the create booking request should match the schema
+    And the create booking response should match the schema
 
   @booking-negative @mandatory
   Scenario Outline: Create booking with missing mandatory field

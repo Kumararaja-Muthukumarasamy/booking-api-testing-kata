@@ -13,4 +13,7 @@ public final class BookingResponseKeys {
     public static final String CHECKOUT = "bookingdates.checkout";
     public static final String EMAIL = "email";
     public static final String PHONE = "phone";
+    public static final String SUCCESS = "success";
+    public static final String ERROR = "error";
+    public static final String ERRORS = "errors";
 }

@@ -1,0 +1,55 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CreateBookingRequest",
+  "type": "object",
+  "properties": {
+    "roomid": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "firstname": {
+      "type": "string",
+      "minLength": 1
+    },
+    "lastname": {
+      "type": "string",
+      "minLength": 1
+    },
+    "depositpaid": {
+      "type": "boolean"
+    },
+    "bookingdates": {
+      "type": "object",
+      "properties": {
+        "checkin": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "checkout": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        }
+      },
+      "required": ["checkin", "checkout"],
+      "additionalProperties": false
+    },
+    "email": {
+      "type": "string",
+      "format": "email"
+    },
+    "phone": {
+      "type": "string",
+      "pattern": "^[0-9]{11,21}$"
+    }
+  },
+  "required": [
+    "roomid",
+    "firstname",
+    "lastname",
+    "depositpaid",
+    "bookingdates",
+    "email",
+    "phone"
+  ],
+  "additionalProperties": false
+}
