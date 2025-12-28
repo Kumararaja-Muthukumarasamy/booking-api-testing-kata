@@ -1,13 +1,13 @@
 package com.booking.stepdefinitions;
 
 import com.booking.client.CreateBookingClient;
-import com.booking.constants.BookingResponseKeys;
-import com.booking.constants.HTTPStatusCodes;
-import com.booking.constants.SchemaPaths;
+import com.booking.constants.api.BookingResponseKeys;
+import com.booking.constants.api.HTTPStatusCodes;
+import com.booking.constants.schema.SchemaPaths;
 import com.booking.model.BookingRequest;
-import com.booking.testdata.BookingDataFactory;
-import com.booking.utils.LoggerUtil;
-import com.booking.utils.SchemaValidatorUtil;
+import com.booking.testdata.BookingTestDataFactory;
+import com.booking.utils.logging.LoggerUtil;
+import com.booking.utils.validation.SchemaValidatorUtil;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -28,7 +28,7 @@ public class CreateBookingSteps {
 
     @Given("a booking already exists for a room")
     public void create_existing_booking_for_room() {
-        bookingRequest = BookingDataFactory.validBooking();
+        bookingRequest = BookingTestDataFactory.validBooking();
         response = CreateBookingClient.createBooking(bookingRequest);
         response.then().statusCode(HTTPStatusCodes.CREATED);
         logger.info("Created initial booking for duplicate room test");
@@ -38,14 +38,14 @@ public class CreateBookingSteps {
 
     @When("I create booking with valid details")
     public void send_create_booking_request_with_valid_details() {
-        bookingRequest = BookingDataFactory.validBooking();
+        bookingRequest = BookingTestDataFactory.validBooking();
         response = CreateBookingClient.createBooking(bookingRequest);
         logger.info("Sent create booking request with valid details");
     }
 
     @When("I create a booking with missing {string}")
     public void send_create_booking_request_with_missing_field(String field) {
-        bookingRequest = BookingDataFactory.safeBookingWithMissingField(field);
+        bookingRequest = BookingTestDataFactory.safeBookingWithMissingField(field);
         response = CreateBookingClient.createBooking(bookingRequest);
         logger.info("Sent create booking request missing field '{}'", field);
     }
@@ -58,14 +58,14 @@ public class CreateBookingSteps {
 
     @When("I create a booking with invalid {string}")
     public void send_create_booking_request_with_invalid_field(String field) {
-        bookingRequest = BookingDataFactory.safeBookingWithInvalidField(field);
+        bookingRequest = BookingTestDataFactory.safeBookingWithInvalidField(field);
         response = CreateBookingClient.createBooking(bookingRequest);
         logger.info("Sent create booking request with invalid field '{}'", field);
     }
 
     @When("I create a booking with valid {string}")
     public void send_create_booking_request_with_valid_boundary_field(String field) {
-        bookingRequest = BookingDataFactory.safeBookingWithValidBoundary(field);
+        bookingRequest = BookingTestDataFactory.safeBookingWithValidBoundary(field);
         response = CreateBookingClient.createBooking(bookingRequest);
         logger.info("Sent create booking request with valid boundary field '{}'", field);
     }

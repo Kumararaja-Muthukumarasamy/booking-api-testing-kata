@@ -1,19 +1,19 @@
 package com.booking.stepdefinitions;
 
-import com.booking.auth.TokenManager;
+import com.booking.utils.auth.TokenManager;
 import com.booking.client.CreateBookingClient;
 import com.booking.client.DeleteBookingClient;
 import com.booking.config.ConfigKey;
 import com.booking.config.ConfigReader;
-import com.booking.constants.BookingResponseKeys;
-import com.booking.constants.HTTPStatusCodes;
-import com.booking.constants.SchemaPaths;
+import com.booking.constants.api.BookingResponseKeys;
+import com.booking.constants.api.HTTPStatusCodes;
+import com.booking.constants.schema.SchemaPaths;
 import com.booking.model.BookingRequest;
-import com.booking.testdata.BookingDataFactory;
-import com.booking.utils.IdConverter;
-import com.booking.utils.LoggerUtil;
-import com.booking.utils.SchemaValidatorUtil;
-import com.booking.utils.TokenFactory;
+import com.booking.testdata.BookingTestDataFactory;
+import com.booking.utils.data.IdConverter;
+import com.booking.utils.logging.LoggerUtil;
+import com.booking.utils.validation.SchemaValidatorUtil;
+import com.booking.utils.data.TokenFactory;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -45,7 +45,7 @@ public class DeleteBookingSteps {
 
     @Given("a valid booking exists for delete")
     public void create_valid_booking_for_delete()  {
-        originalBooking = BookingDataFactory.validBooking();
+        originalBooking = BookingTestDataFactory.validBooking();
         response = CreateBookingClient.createBooking(originalBooking);
         response.then().statusCode(HTTPStatusCodes.CREATED);
 

@@ -1,17 +1,17 @@
 package com.booking.stepdefinitions;
 
-import com.booking.auth.TokenManager;
+import com.booking.utils.auth.TokenManager;
 import com.booking.client.CreateBookingClient;
 import com.booking.client.GetBookingClient;
-import com.booking.client.UpdateBookingPutClient;
+import com.booking.client.BookingPutClient;
 import com.booking.constants.api.BookingResponseKeys;
 import com.booking.constants.api.HTTPStatusCodes;
 import com.booking.constants.schema.SchemaPaths;
 import com.booking.model.BookingRequest;
-import com.booking.testdata.BookingDataFactory;
-import com.booking.utils.LoggerUtil;
-import com.booking.utils.SchemaValidatorUtil;
-import com.booking.utils.TokenFactory;
+import com.booking.testdata.BookingTestDataFactory;
+import com.booking.utils.logging.LoggerUtil;
+import com.booking.utils.validation.SchemaValidatorUtil;
+import com.booking.utils.data.TokenFactory;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -23,9 +23,9 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.equalTo;
 
-public class UpdateBookingPutSteps {
+public class BookingPutSteps {
 
-    private static final Logger logger = LoggerUtil.getLogger(UpdateBookingPutSteps.class);
+    private static final Logger logger = LoggerUtil.getLogger(BookingPutSteps.class);
 
     private Response response;
     private int bookingId;
@@ -37,7 +37,7 @@ public class UpdateBookingPutSteps {
 
     @Given("a valid booking exists")
     public void create_valid_booking_for_update() {
-        originalBooking = BookingDataFactory.validBooking();
+        originalBooking = BookingTestDataFactory.validBooking();
         response = CreateBookingClient.createBooking(originalBooking);
         response.then().statusCode(HTTPStatusCodes.CREATED);
 
@@ -61,37 +61,37 @@ public class UpdateBookingPutSteps {
 
     @When("I update the booking with valid details")
     public void send_update_booking_request_with_valid_details() {
-        updatedBooking = BookingDataFactory.updatedBooking();
-        response = UpdateBookingPutClient.updateBooking(bookingId, updatedBooking, currentToken);
+        updatedBooking = BookingTestDataFactory.updatedBooking();
+        response = BookingPutClient.updateBooking(bookingId, updatedBooking, currentToken);
         logger.info("Sent PUT request to update booking ID {}", bookingId);
     }
 
     @When("I update the booking with valid details using {string} token")
     public void send_update_booking_request_with_token(String tokenType) {
-        updatedBooking = BookingDataFactory.updatedBooking();
+        updatedBooking = BookingTestDataFactory.updatedBooking();
         currentToken = TokenFactory.resolveToken(tokenType);
-        response = UpdateBookingPutClient.updateBooking(bookingId, updatedBooking, currentToken);
+        response = BookingPutClient.updateBooking(bookingId, updatedBooking, currentToken);
         logger.info("Sent PUT request with {} token for booking ID {}", tokenType, bookingId);
     }
 
     @When("I update the booking with missing {string}")
     public void send_update_booking_request_with_missing_field(String field) {
-        updatedBooking = BookingDataFactory.safeBookingWithMissingField(field);
-        response = UpdateBookingPutClient.updateBooking(bookingId, updatedBooking, currentToken);
+        updatedBooking = BookingTestDataFactory.safeBookingWithMissingField(field);
+        response = BookingPutClient.updateBooking(bookingId, updatedBooking, currentToken);
         logger.info("Sent PUT request with missing field {}", field);
     }
 
     @When("I update the booking with invalid {string}")
     public void send_update_booking_request_with_invalid_field(String field) {
-        updatedBooking = BookingDataFactory.safeBookingWithInvalidField(field);
-        response = UpdateBookingPutClient.updateBooking(bookingId, updatedBooking, currentToken);
+        updatedBooking = BookingTestDataFactory.safeBookingWithInvalidField(field);
+        response = BookingPutClient.updateBooking(bookingId, updatedBooking, currentToken);
         logger.info("Sent PUT request with invalid field {}", field);
     }
 
     @When("I update the booking with valid {string}")
     public void send_update_booking_request_with_valid_boundary_field(String field) {
-        updatedBooking = BookingDataFactory.safeBookingWithValidBoundary(field);
-        response = UpdateBookingPutClient.updateBooking(bookingId, updatedBooking, currentToken);
+        updatedBooking = BookingTestDataFactory.safeBookingWithValidBoundary(field);
+        response = BookingPutClient.updateBooking(bookingId, updatedBooking, currentToken);
         logger.info("Sent PUT request with valid boundary field {}", field);
     }
 
