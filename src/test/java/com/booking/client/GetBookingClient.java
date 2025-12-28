@@ -14,7 +14,7 @@ public class GetBookingClient {
     private static final Logger logger = LoggerUtil.getLogger(GetBookingClient.class);
 
     private GetBookingClient() {
-        // prevent instantiation
+
     }
 
     private static String resolveTokenHeader(String token) {

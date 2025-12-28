@@ -15,5 +15,4 @@ public class SchemaPaths {
     public static final String UPDATE_BOOKING_RESPONSE_SCHEMA = "schemas/booking/update-booking-response-schema.json";
     public static final String DELETE_BOOKING_RESPONSE_SCHEMA = "schemas/booking/delete-booking-response-schema.json";
 
-    public static final String ERROR_SCHEMA = "schemas/error-schema.json";
 }

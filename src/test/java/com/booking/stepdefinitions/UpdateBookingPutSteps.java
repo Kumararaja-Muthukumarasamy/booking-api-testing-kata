@@ -141,4 +141,5 @@ public class UpdateBookingPutSteps {
         SchemaValidatorUtil.validateSchema(updatedBooking, SchemaPaths.UPDATE_BOOKING_REQUEST_SCHEMA);
         logger.debug("Validated update request against {}", SchemaPaths.UPDATE_BOOKING_REQUEST_SCHEMA);
     }
+
 }

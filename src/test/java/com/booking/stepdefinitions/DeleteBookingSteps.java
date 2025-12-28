@@ -105,7 +105,7 @@ public class DeleteBookingSteps {
                 .body(BookingResponseKeys.SUCCESS, equalTo(true));
         logger.info("Booking deleted successfully for ID {}", bookingId);
 
-        // Add schema validation
+
         SchemaValidatorUtil.validateSchema(response, SchemaPaths.DELETE_BOOKING_RESPONSE_SCHEMA);
         logger.debug("Validated delete response against {}", SchemaPaths.DELETE_BOOKING_RESPONSE_SCHEMA);
     }

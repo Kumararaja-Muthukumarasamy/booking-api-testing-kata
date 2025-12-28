@@ -5,7 +5,7 @@ Feature: Create Booking
   Background:
     Given the booking service is available
 
-  @positive-booking
+  @positive-booking @contract
   Scenario: Create a booking with valid details
     When I create booking with valid details
     Then the booking should be created successfully

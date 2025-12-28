@@ -4,7 +4,7 @@ Feature: Delete booking
   Background:
     Given the booking service for DeleteBooking is available
 
-  @delete-positive
+  @delete-positive @contract
   Scenario: Delete booking with valid ID and token
     Given a valid booking exists for delete
     And I am authenticated with valid token for delete

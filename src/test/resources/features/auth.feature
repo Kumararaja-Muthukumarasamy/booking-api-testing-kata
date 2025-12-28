@@ -17,6 +17,7 @@ Feature: Authentication API
     When I authenticate with username "<username>" and password "<password>"
     Then authentication should fail with status 401 and error "Invalid credentials"
     And the authentication response should match the auth-response schema
+
     Examples:
       | username | password |
       | wrong    | password |

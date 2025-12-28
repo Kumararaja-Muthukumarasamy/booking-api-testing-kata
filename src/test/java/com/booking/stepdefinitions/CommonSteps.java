@@ -2,9 +2,12 @@ package com.booking.stepdefinitions;
 
 import com.booking.config.ConfigKey;
 import com.booking.config.ConfigReader;
+import com.booking.constants.SchemaPaths;
 import com.booking.utils.LoggerUtil;
+import com.booking.utils.SchemaValidatorUtil;
 import com.booking.utils.TokenFactory;
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 import io.restassured.response.Response;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Assertions;
