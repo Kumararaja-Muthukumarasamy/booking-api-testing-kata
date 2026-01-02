@@ -104,34 +104,35 @@ readability, maintainability, and low cognitive complexity.
 ### Folder Structure & Responsibilities
 
 ```
-src/test/java
- └── com.booking
-     ├── client          → API clients (one per endpoint)
-     ├── config          → Configuration reader & keys
-     ├── constants       → API constants (response keys, HTTP codes, schema paths)
-     ├── model           → POJO models (AuthRequest, BookingRequest, BookingDates)
-     ├── runner          → Cucumber JUnit 5 test runner
-     ├── spec            → Rest Assured request specification factory
-     ├── stepdefinitions → Cucumber step definitions
-     ├── testdata        → Test data builders/factories
-     └── utils
-         ├── auth        → Token management
-         ├── context     → Shared scenario context
-         ├── data        → Common utility helpers
-         ├── logging     → Logger utility
-         └── validation  → Schema validation utilities
-
-src/test/resources
- ├── features           → Cucumber feature files
- ├── schemas            → JSON request/response schemas
- ├── spec               → Config files (config.properties, log4j2.xml)
- └── config.properties  → Environment configuration
-
-.github
- └── workflows          → GitHub Actions workflows
-
-pom.xml                 → Maven build configuration
-README.md               → Project documentation
+booking-api-testing-kata
+│
+├── reports
+│   └── Booking-API_Final-Execution-Overview.html
+│  
+├── src
+│   └── test
+│       ├── java
+│       │   └── com.booking
+│       │       ├── client           → API clients
+│       │       ├── config           → Configuration reader & keys
+│       │       ├── constants        → API & config constants
+│       │       ├── models           → Request/response POJOs
+│       │       ├── runner           → Cucumber test runner
+│       │       ├── spec             → Rest Assured request specs
+│       │       ├── stepdefinitions  → Cucumber step definitions
+│       │       ├── testdata         → Test data factories
+│       │       └── utils            → Auth, context, logging, validation utils
+│       │
+│       └── resources
+│           ├── config               → Environment configuration
+│           ├── features             → Cucumber feature files
+│           ├── schemas              → JSON schemas
+│           └── observations         → Validation findings
+│
+├── .github/workflows                → CI configuration
+├── pom.xml                          → Maven configuration
+├── README.md
+└── .gitignore
 ```
 
 ### Getting Started (Clone & Setup)
@@ -323,7 +324,14 @@ The rerun file is generated via the configured Cucumber plugin:
  These observations are based on runtime behavior of an externally maintained application and are documented 
  to set clear expectations during test execution.
 
-### Final Note
+## Test Execution Report
+### Final Execution Overview
 
+- **Report:** `reports/Booking-API_Final-Execution-Overview.html`
+- **Description:**  
+  Single-page HTML report summarizing the final execution results, including
+  pass/fail statistics and documented API contract deviations.
+
+### Final Note
 This framework is designed as a clean baseline with a clear roadmap for future improvements.
 Stability, readability, and maintainability are prioritized over aggressive optimizations.
