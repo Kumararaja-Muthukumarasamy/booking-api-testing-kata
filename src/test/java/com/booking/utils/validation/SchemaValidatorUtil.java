@@ -3,9 +3,10 @@ package com.booking.utils.validation;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.module.jsv.JsonSchemaValidator;
 import io.restassured.response.Response;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class SchemaValidatorUtil {
+public final class SchemaValidatorUtil {
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
@@ -14,16 +15,14 @@ public class SchemaValidatorUtil {
     public static void validateSchema(Response response, String schemaPath) {
         assertThat(
                 "Response does not match schema: " + schemaPath,
-                response.asString(),
-                JsonSchemaValidator.matchesJsonSchemaInClasspath(schemaPath)
+                response.asString(), JsonSchemaValidator.matchesJsonSchemaInClasspath(schemaPath)
         );
     }
 
     public static void validateSchema(String json, String schemaPath) {
         assertThat(
                 "JSON does not match schema: " + schemaPath,
-                json,
-                JsonSchemaValidator.matchesJsonSchemaInClasspath(schemaPath)
+                json, JsonSchemaValidator.matchesJsonSchemaInClasspath(schemaPath)
         );
     }
 

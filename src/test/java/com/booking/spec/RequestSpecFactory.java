@@ -1,11 +1,9 @@
 package com.booking.spec;
 
-import com.booking.utils.auth.TokenManager;
 import com.booking.config.ConfigKey;
 import com.booking.config.ConfigReader;
+import com.booking.utils.auth.TokenManager;
 import io.restassured.builder.RequestSpecBuilder;
-
-import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 
 import static io.restassured.http.ContentType.JSON;

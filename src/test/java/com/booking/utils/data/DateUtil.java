@@ -1,6 +1,6 @@
 package com.booking.utils.data;
 
-import com.booking.model.BookingDates;
+import com.booking.models.booking.BookingDates;
 
 import java.time.LocalDate;
 

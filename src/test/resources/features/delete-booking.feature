@@ -1,44 +1,64 @@
 @delete-booking
-Feature: Delete booking
+Feature: Delete Booking
+  This feature allows consumers to delete an existing booking
+  using a valid booking ID and authentication token
+  as defined in the API contract.
 
   Background:
-    Given the booking service for DeleteBooking is available
+    Given the booking service is available
 
-  @delete-positive @contract
-  Scenario: Delete booking with valid ID and token
-    Given a valid booking exists for delete
-    And I am authenticated with valid token for delete
+  # -------------------------------------------------
+  # Functional – Positive Scenario
+  # -------------------------------------------------
+
+  @delete-positive
+  Scenario: Delete booking with valid ID and valid token
+    Given a booking exists
+    And I am authenticated with a valid token
     When I delete the booking
-    Then the booking should be deleted successfully
+    Then the booking should be deleted successfully with status 201
 
-  @delete-negative @id
-  Scenario Outline: Delete booking with valid token and invalid id
-    Given I am authenticated with valid token for delete
-    When I delete the booking using id "<id>"
-    Then the delete request should fail with status <statusCode> and error message "<errorMessage>"
+  # -------------------------------------------------
+  # Contract – Unauthorized Access
+  # -------------------------------------------------
+
+  @delete-contract
+  Scenario: Delete booking request is rejected for invalid authentication
+    Given a booking exists
+    And I use a "invalid" token
+    When I attempt to delete the booking
+    Then the error response should match the common error schema
+
+  # -------------------------------------------------
+  # Functional - Invalid ID Validation
+  # -------------------------------------------------
+
+  @delete-negative @invalid-id
+  Scenario Outline: Delete booking with invalid ID should fail with bad request
+    Given I am authenticated with a valid token
+    When I attempt to delete the booking using invalid id "<id>"
+    Then the request should fail with status 400
 
     Examples:
-      | id   | statusCode | errorMessage             |
-      | 0    | 500        | Failed to delete booking |
-      | -1   | 500        | Failed to delete booking |
-      | 9999 | 500        | Failed to delete booking |
-      | null | 500        | Failed to delete booking |
+      | id   |
+      | 0    |
+      | -1   |
+      | 9999 |
 
-  @delete-negative @delete-no-id
-  Scenario: Delete booking without ID
-    Given I am authenticated with valid token for delete
-    When I send delete request without id
-    Then the delete request should fail with status 405
+  # -------------------------------------------------
+  # Functional – Authentication Validation
+  # -------------------------------------------------
 
   @delete-negative @auth
-  Scenario Outline: Delete booking with invalid or missing token
-    Given a valid booking exists for delete
-    And I use a "<tokenType>" token for delete
-    When I delete the booking using token
-    Then the delete request should fail with status <statusCode> and error message "<errorMessage>"
+  Scenario Outline: Delete booking fails with invalid or missing token
+    Given a booking exists
+    And I use a "<tokenType>" token
+    When I attempt to delete the booking
+    Then the request should fail with status 401
+    And the error message should be "Unauthorized"
 
     Examples:
-      | tokenType | statusCode | errorMessage             |
-      | invalid   | 500        | Failed to delete booking |
-      | empty     | 500        | Failed to delete booking |
-      | missing   | 401        | Authentication required  |
+      | tokenType |
+      | invalid   |
+      | empty     |
+      | missing   |

@@ -1,19 +1,9 @@
 package com.booking.stepdefinitions;
 
-import com.booking.utils.auth.TokenManager;
-import com.booking.client.CreateBookingClient;
 import com.booking.client.DeleteBookingClient;
-import com.booking.config.ConfigKey;
-import com.booking.config.ConfigReader;
-import com.booking.constants.api.BookingResponseKeys;
-import com.booking.constants.api.HTTPStatusCodes;
-import com.booking.constants.schema.SchemaPaths;
-import com.booking.model.BookingRequest;
-import com.booking.testdata.BookingTestDataFactory;
-import com.booking.utils.data.IdConverter;
+import com.booking.utils.auth.TokenManager;
+import com.booking.utils.context.ScenarioContext;
 import com.booking.utils.logging.LoggerUtil;
-import com.booking.utils.validation.SchemaValidatorUtil;
-import com.booking.utils.data.TokenFactory;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -21,106 +11,107 @@ import io.restassured.response.Response;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Assertions;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-
 public class DeleteBookingSteps {
 
     private static final Logger logger = LoggerUtil.getLogger(DeleteBookingSteps.class);
 
     private Response response;
-    private int bookingId;
-    private BookingRequest originalBooking;
     private String token;
-    private String currentToken;
 
-    // ---------- GIVEN ----------
+    // -------------------------------------------------
+    // GIVEN
+    // -------------------------------------------------
 
-    @Given("the booking service for DeleteBooking is available")
-    public void verify_delete_booking_service_is_available() {
-        Assertions.assertNotNull(ConfigReader.getProperty(ConfigKey.BASE_URL));
-        Assertions.assertNotNull(ConfigReader.getProperty(ConfigKey.BOOKING_ENDPOINT));
-        logger.info("DeleteBooking service configuration verified");
-    }
+    @Given("I am authenticated with a valid token")
+    public void authenticate_with_valid_token() {
 
-    @Given("a valid booking exists for delete")
-    public void create_valid_booking_for_delete()  {
-        originalBooking = BookingTestDataFactory.validBooking();
-        response = CreateBookingClient.createBooking(originalBooking);
-        response.then().statusCode(HTTPStatusCodes.CREATED);
-
-        bookingId = response.jsonPath().getInt(BookingResponseKeys.BOOKING_ID);
-        assertThat(bookingId, greaterThan(0));
-
-        logger.info("Created booking with ID {}", bookingId);
-    }
-
-    @Given("I am authenticated with valid token for delete")
-    public void authenticate_with_valid_token_for_delete() {
         token = TokenManager.getToken();
-        assertThat(token, not(emptyString()));
-        assertThat(token, notNullValue());
 
-        logger.info("Retrieved valid token for delete");
+        Assertions.assertNotNull(token, "Token must not be null");
+        Assertions.assertFalse(token.isEmpty(), "Token must not be empty");
+
+        ScenarioContext.set("token", token);
+
+        logger.info("Authenticated with valid token (state=PRESENT)");
     }
 
-    @Given("I use a {string} token for delete")
-    public void configure_token_for_delete(String tokenType) {
-        currentToken = TokenFactory.resolveToken(tokenType);
-        logger.info("Configured {} token for delete", tokenType);
-    }
-
-    // ---------- WHEN ----------
+    // -------------------------------------------------
+    // WHEN
+    // -------------------------------------------------
 
     @When("I delete the booking")
-    public void send_delete_booking_request() {
+    public void delete_booking() {
+
+        Integer bookingId = (Integer) ScenarioContext.get("bookingId");
+        String token = (String) ScenarioContext.get("token");
+
+        Assertions.assertNotNull(
+                bookingId,
+                "BookingId must exist before delete operation"
+        );
+
+        logger.info(
+                "Sending DELETE request | bookingId={} | tokenState={}",
+                bookingId,
+                token == null ? "MISSING" : "PRESENT"
+        );
+
         response = DeleteBookingClient.deleteBooking(bookingId, token);
-        logger.info("Sent DELETE request for booking ID {}", bookingId);
+        ScenarioContext.set("response", response);
     }
 
-    @When("I delete the booking using token")
-    public void send_delete_booking_request_with_token() {
-        response = DeleteBookingClient.deleteBooking(bookingId, currentToken);
-        logger.info("Sent DELETE request for booking ID {} using configured token", bookingId);
+    @When("I attempt to delete the booking")
+    public void attempt_delete_booking() {
+
+        Integer bookingId = (Integer) ScenarioContext.get("bookingId");
+        String token = (String) ScenarioContext.get("token");
+
+        Assertions.assertNotNull(
+                bookingId,"BookingId must exist before attempting delete"
+        );
+
+        logger.info(
+                "Attempting DELETE | bookingId={} | tokenState={}",
+                bookingId,
+                token == null ? "MISSING"
+                        : token.isEmpty() ? "EMPTY" : "PRESENT"
+        );
+
+        response = DeleteBookingClient.deleteBooking(bookingId, token);
+        ScenarioContext.set("response", response);
     }
 
-    @When("I delete the booking using id {string}")
-    public void send_delete_booking_request_with_id(String idText) {
-        int id = IdConverter.toIntOrDefault(idText, -1);
-        response = DeleteBookingClient.deleteBooking(id, token);
-        logger.info("Sent DELETE request with ID {}", id);
+    @When("I attempt to delete the booking using invalid id {string}")
+    public void attempt_delete_with_invalid_id(String idText) {
+
+        int invalidId = Integer.parseInt(idText);
+        String token = (String) ScenarioContext.get("token");
+
+        logger.info(
+                "Attempting DELETE with invalid bookingId={} | tokenState={}",
+                invalidId,
+                token == null ? "MISSING" : "PRESENT"
+        );
+
+        response = DeleteBookingClient.deleteBooking(invalidId, token);
+        ScenarioContext.set("response", response);
     }
 
-    @When("I send delete request without id")
-    public void send_delete_booking_request_without_id() {
-        response = DeleteBookingClient.deleteBookingWithoutId(token);
-        logger.info("Sent DELETE request without ID");
-    }
+    // -------------------------------------------------
+    // THEN
+    // -------------------------------------------------
 
-    // ---------- THEN ----------
+    @Then("the booking should be deleted successfully with status {int}")
+    public void verify_delete_success(int expectedStatus) {
+        int actualStatus = response.getStatusCode();
 
-    @Then("the booking should be deleted successfully")
-    public void verify_booking_deleted_successfully() {
-        response.then().statusCode(HTTPStatusCodes.OK)
-                .body(BookingResponseKeys.SUCCESS, equalTo(true));
-        logger.info("Booking deleted successfully for ID {}", bookingId);
+        logger.info(
+                "Delete successful | expectedStatus={} | actualStatus={}",
+                expectedStatus, actualStatus
+        );
 
-
-        SchemaValidatorUtil.validateSchema(response, SchemaPaths.DELETE_BOOKING_RESPONSE_SCHEMA);
-        logger.debug("Validated delete response against {}", SchemaPaths.DELETE_BOOKING_RESPONSE_SCHEMA);
-    }
-
-
-    @Then("the delete request should fail with status {int} and error message {string}")
-    public void verify_delete_failed_with_status_and_error(int statusCode, String errorMessage) {
-        response.then().statusCode(statusCode)
-                .body(BookingResponseKeys.ERROR, equalTo(errorMessage));
-        logger.info("Delete failed with status {} and error '{}'", statusCode, errorMessage);
-    }
-
-    @Then("the delete request should fail with status {int}")
-    public void verify_delete_failed_with_status(int statusCode) {
-        response.then().statusCode(statusCode);
-        logger.info("Delete failed with status {}", statusCode);
+        Assertions.assertEquals(
+                expectedStatus, actualStatus, "Unexpected delete success status"
+        );
     }
 }

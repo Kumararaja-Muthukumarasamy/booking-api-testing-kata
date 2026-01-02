@@ -1,0 +1,66 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CreateBookingResponse",
+  "type": "object",
+  "required": ["bookingid", "booking"],
+  "properties": {
+    "bookingid": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "booking": {
+      "type": "object",
+      "required": [
+        "roomid",
+        "firstname",
+        "lastname",
+        "depositpaid",
+        "bookingdates",
+        "email",
+        "phone"
+      ],
+      "properties": {
+        "roomid": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "firstname": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 18
+        },
+        "lastname": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 18
+        },
+        "depositpaid": {
+          "type": "boolean"
+        },
+        "bookingdates": {
+          "type": "object",
+          "required": ["checkin", "checkout"],
+          "properties": {
+            "checkin": {
+              "type": "string",
+              "format": "date"
+            },
+            "checkout": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "phone": {
+          "type": "string",
+          "minLength": 11,
+          "maxLength": 21
+        }
+      }
+    }
+  }
+}

@@ -1,9 +1,9 @@
 package com.booking.utils.auth;
 
-import com.booking.client.AuthClient;
-import com.booking.config.ConfigKey;
-import com.booking.config.ConfigReader;
-import com.booking.constants.api.HTTPStatusCodes;
+import com.booking.client.AuthTokenClient;
+import com.booking.models.auth.AuthRequest;
+import com.booking.testdata.auth.AuthTestDataFactory;
+import io.restassured.response.Response;
 
 public final class TokenManager {
 
@@ -13,21 +13,18 @@ public final class TokenManager {
     }
 
     public static String getToken() {
-        if (token == null || token.isBlank()) {
+
+        if (token == null) {
             token = generateToken();
         }
         return token;
     }
 
     private static String generateToken() {
-        return AuthClient.generateToken(
-                        ConfigReader.getProperty(ConfigKey.AUTH_USERNAME),
-                        ConfigReader.getProperty(ConfigKey.AUTH_PASSWORD)
-                )
-                .then()
-                .statusCode(HTTPStatusCodes.OK)
-                .extract()
-                .path("token");
+        AuthRequest request = AuthTestDataFactory.createValidAuthRequest();
+        Response response = AuthTokenClient.generateToken(request);
+
+        return response.jsonPath().getString("token");
     }
 
     public static void clearToken() {

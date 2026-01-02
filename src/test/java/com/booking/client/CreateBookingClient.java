@@ -2,8 +2,8 @@ package com.booking.client;
 
 import com.booking.config.ConfigKey;
 import com.booking.config.ConfigReader;
-import com.booking.model.BookingRequest;
 import com.booking.spec.RequestSpecFactory;
+import com.booking.utils.logging.JsonLogUtil;
 import com.booking.utils.logging.LoggerUtil;
 import io.restassured.response.Response;
 import org.apache.logging.log4j.Logger;
@@ -15,21 +15,38 @@ public class CreateBookingClient {
     private static final Logger logger = LoggerUtil.getLogger(CreateBookingClient.class);
 
     private CreateBookingClient() {
-
     }
 
-    public static Response createBooking(BookingRequest bookingRequest) {
-        String endpoint = ConfigReader.getProperty(ConfigKey.BOOKING_ENDPOINT);
-        logger.info("Sending Create Booking request to {}", endpoint);
+    public static Response createBooking(Object requestBody) {
 
-        Response response = given()
-                .spec(RequestSpecFactory.getBaseRequestSpec())
-                .body(bookingRequest)
-                .when()
-                .post(endpoint);
+        String endpoint =
+                ConfigReader.getProperty(ConfigKey.BOOKING_ENDPOINT);
 
-        logger.debug("Create Booking response status: {}", response.getStatusCode());
-        logger.debug("Create Booking response body: {}", response.asString());
+        logger.info("Sending Create Booking request | endpoint={}", endpoint);
+        logger.info(
+                "Create Booking request body | {}",
+                JsonLogUtil.toJson(requestBody)
+        );
+
+        Response response =
+                given()
+                        .spec(RequestSpecFactory.getBaseRequestSpec())
+                        .body(requestBody)
+                        .when()
+                        .post(endpoint)
+                        .then()
+                        .extract()
+                        .response();
+
+        logger.info(
+                "Create Booking response | statusCode={}",
+                response.getStatusCode()
+        );
+
+        logger.info(
+                "Create Booking response body | {}",
+                response.asPrettyString()
+        );
 
         return response;
     }

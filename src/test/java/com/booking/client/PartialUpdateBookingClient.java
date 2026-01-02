@@ -10,40 +10,44 @@ import org.apache.logging.log4j.Logger;
 
 import static io.restassured.RestAssured.given;
 
-public class DeleteBookingClient {
+public class PartialUpdateBookingClient {
 
-    private static final Logger logger = LoggerUtil.getLogger(DeleteBookingClient.class);
+    private static final Logger logger = LoggerUtil.getLogger(PartialUpdateBookingClient.class);
 
-    private DeleteBookingClient() {
+    private PartialUpdateBookingClient() {
     }
 
     private static String resolveTokenHeader(String token) {
         return token != null ? "token=" + token : "";
     }
 
-    public static Response deleteBooking(int bookingId, String token) {
+    public static Response patchBooking(
+            int bookingId,
+            Object requestBody,
+            String token
+    ) {
 
         String endpoint =
                 ConfigReader.getProperty(ConfigKey.BOOKING_ENDPOINT) + "/{id}";
 
         logger.info(
-                "DELETE booking request | bookingId={} | endpoint={}",
+                "PATCH booking | bookingId={} | requestBody={}",
                 bookingId,
-                endpoint
+                JsonLogUtil.toJson(requestBody)
         );
 
         Response response = given()
                 .spec(RequestSpecFactory.getBaseRequestSpec())
                 .header("Cookie", resolveTokenHeader(token))
                 .pathParam("id", bookingId)
+                .body(requestBody)
                 .when()
-                .delete(endpoint);
+                .patch(endpoint);
 
         logger.info(
-                "DELETE booking response | bookingId={} | statusCode={} | responseBody={}",
+                "PATCH booking response | bookingId={} | statusCode={}",
                 bookingId,
-                response.getStatusCode(),
-                JsonLogUtil.toJson(response.asString())
+                response.getStatusCode()
         );
 
         return response;

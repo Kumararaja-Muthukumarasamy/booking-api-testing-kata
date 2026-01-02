@@ -10,24 +10,24 @@ import org.apache.logging.log4j.Logger;
 
 import static io.restassured.RestAssured.given;
 
-public class DeleteBookingClient {
+public class RetrieveBookingClient {
 
-    private static final Logger logger = LoggerUtil.getLogger(DeleteBookingClient.class);
+    private static final Logger logger = LoggerUtil.getLogger(RetrieveBookingClient.class);
 
-    private DeleteBookingClient() {
+    private RetrieveBookingClient() {
     }
 
     private static String resolveTokenHeader(String token) {
         return token != null ? "token=" + token : "";
     }
 
-    public static Response deleteBooking(int bookingId, String token) {
+    public static Response getBookingById(Object bookingId, String token) {
 
         String endpoint =
                 ConfigReader.getProperty(ConfigKey.BOOKING_ENDPOINT) + "/{id}";
 
         logger.info(
-                "DELETE booking request | bookingId={} | endpoint={}",
+                "GET booking request | bookingId={} | endpoint={}",
                 bookingId,
                 endpoint
         );
@@ -37,10 +37,10 @@ public class DeleteBookingClient {
                 .header("Cookie", resolveTokenHeader(token))
                 .pathParam("id", bookingId)
                 .when()
-                .delete(endpoint);
+                .get(endpoint);
 
         logger.info(
-                "DELETE booking response | bookingId={} | statusCode={} | responseBody={}",
+                "GET booking response | bookingId={} | statusCode={} | responseBody={}",
                 bookingId,
                 response.getStatusCode(),
                 JsonLogUtil.toJson(response.asString())

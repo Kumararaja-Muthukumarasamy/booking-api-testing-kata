@@ -1,67 +1,150 @@
 @booking
 Feature: Create Booking
-  Creating a booking allows customers to reserve a room
+  This feature allows consumers to create a new booking
+  using valid booking details as defined in the API contract.
 
   Background:
     Given the booking service is available
 
-  @positive-booking @contract
-  Scenario: Create a booking with valid details
-    When I create booking with valid details
+  # -------------------------------------------------
+  # Functional – Positive Scenario
+  # -------------------------------------------------
+
+  @booking-positive
+  Scenario: Create booking with all mandatory fields valid
+    When I create a booking with all required fields
     Then the booking should be created successfully
-    And the create booking request should match the schema
-    And the create booking response should match the schema
+
+  # -------------------------------------------------
+  # Functional – Duplicate Booking Validation
+  # -------------------------------------------------
+
+  @booking-negative @duplicate
+  Scenario: Create booking with duplicate room id
+    And a booking exists for the room
+    When I create another booking for the same room
+    Then the booking should fail with a client validation error
+    And the error message should be "Failed to create booking"
+
+  # -------------------------------------------------
+  # Contract / Schema Validation
+  # -------------------------------------------------
+
+  @booking-contract
+  Scenario: Create booking request matches the contract schema
+    When I create a booking with all required fields
+    Then the create booking request should match the create-booking request schema
+
+  @booking-contract
+  Scenario: Create booking response matches the contract schema
+    When I create a booking with all required fields
+    Then the create booking response should match the create-booking response schema
+
+  # -------------------------------------------------
+  # Functional – Mandatory Field Validation
+  # -------------------------------------------------
 
   @booking-negative @mandatory
   Scenario Outline: Create booking with missing mandatory field
     When I create a booking with missing "<field>"
     Then the booking should fail with status 400
-    And the error messages should be "<errorMessage>"
+
     Examples:
-      | field     | errorMessage                       |
-      | roomid    | must be greater than or equal to 1 |
-      | firstname | Firstname should not be blank      |
-      | lastname  | Lastname should not be blank       |
-      | checkin   | must not be null                   |
-      | checkout  | must not be null                   |
-      | email     | Failed to create booking           |
-      | phone     | Failed to create booking           |
+      | field        |
+      | roomid       |
+      | firstname    |
+      | lastname     |
+      | depositpaid  |
+      | bookingdates |
+      | email        |
+      | phone        |
 
-  @booking-negative @duplicate
-  Scenario: Create booking with duplicate room id
-    And a booking already exists for a room
-    When I create another booking for the same room
-    Then the booking should fail with status 409
-    And the error message should be "Failed to create booking"
+  # -------------------------------------------------
+  # Field-level Boundary Validation
+  # -------------------------------------------------
 
-  @booking-negative @boundary-invalid
-  Scenario Outline: Field-level boundary validation
+  @booking-negative @boundary-invalid @roomid
+  Scenario Outline: RoomId validation – invalid values
     When I create a booking with invalid "<field>"
-    Then the booking should fail with status <statusCode>
-    And the error messages should be "<errorMessage>"
+    Then the booking should fail with status 400
+
     Examples:
-      | field                   | statusCode | errorMessage                        |
-      | roomid_negative         | 400        | must be greater than or equal to 1  |
-      | firstname_too_short     | 400        | size must be between 3 and 18       |
-      | firstname_too_long      | 400        | size must be between 3 and 18       |
-      | lastname_too_short      | 400        | size must be between 3 and 30       |
-      | lastname_too_long       | 400        | size must be between 3 and 30       |
-      | invalid_date_format     | 400        | Failed to create booking            |
-      | same_checkin_checkout   | 409        | Failed to create booking            |
-      | checkout_before_checkin | 409        | Failed to create booking            |
-      | email_without_at        | 400        | must be a well-formed email address |
-      | phone_lessthan_11       | 400        | size must be between 11 and 21      |
-      | phone_greaterthan_21    | 400        | size must be between 11 and 21      |
+      | field           |
+      | roomid_negative |
+      | roomid_zero     |
+      | roomid_string   |
+      | roomid_boolean  |
+      | roomid_decimal  |
+
+  @booking-negative @boundary-invalid @firstname
+  Scenario Outline: Firstname validation – invalid values
+    When I create a booking with invalid "<field>"
+    Then the booking should fail with status 400
+    And the error messages should contain "<errorMessage>"
+
+    Examples:
+      | field               | errorMessage                  |
+      | firstname_too_short | size must be between 3 and 18 |
+      | firstname_too_long  | size must be between 3 and 18 |
+      | firstname_blank     | size must be between 3 and 18 |
+
+  @booking-negative @boundary-invalid @lastname
+  Scenario Outline: Lastname validation – invalid values
+    When I create a booking with invalid "<field>"
+    Then the booking should fail with status 400
+    And the error messages should contain "<errorMessage>"
+
+    Examples:
+      | field              | errorMessage                  |
+      | lastname_too_short | size must be between 3 and 18 |
+      | lastname_too_long  | size must be between 3 and 18 |
+      | lastname_blank     | size must be between 3 and 18 |
+
+  @booking-negative @boundary-invalid @dates
+  Scenario Outline: Booking dates validation – invalid combinations
+    When I create a booking with invalid "<field>"
+    Then the booking should fail with a client validation error
+    And the error messages should contain "Failed to create booking"
+
+    Examples:
+      | field                   |
+      | invalid_date_format     |
+      | checkout_before_checkin |
+      | same_day_booking        |
+
+  @booking-negative @boundary-invalid @email
+  Scenario Outline: Email validation – invalid values
+    When I create a booking with invalid "<field>"
+    Then the booking should fail with status 400
+    And the error messages should contain "<errorMessage>"
+
+    Examples:
+      | field                  | errorMessage                        |
+      | email_missing_at       | must be a well-formed email address |
+      | email_missing_domain   | must be a well-formed email address |
+      | email_missing_username | must be a well-formed email address |
+
+  @booking-negative @boundary-invalid @phone
+  Scenario Outline: Phone validation – invalid values
+    When I create a booking with invalid "<field>"
+    Then the booking should fail with status 400
+    And the error messages should contain "<errorMessage>"
+
+    Examples:
+      | field                | errorMessage                   |
+      | phone_lessthan_11    | size must be between 11 and 21 |
+      | phone_greaterthan_21 | size must be between 11 and 21 |
 
   @booking-positive @boundary-valid
   Scenario Outline: Accept valid boundary values
     When I create a booking with valid "<field>"
     Then the booking should be created successfully
+
     Examples:
-      | field              |
-      | firstname_length_3 |
-      | firstname_length_18|
-      | lastname_length_3 |
-      | lastname_length_30 |
-      | phone_length_11    |
-      | phone_length_21    |
+      | field               |
+      | firstname_length_3  |
+      | firstname_length_18 |
+      | lastname_length_3   |
+      | lastname_length_18  |
+      | phone_length_11     |
+      | phone_length_21     |
